@@ -41,6 +41,20 @@ final class ModelCatalog
         return isset($this->models[$modelId]);
     }
 
+    /**
+     * Model for a background job (title, translate), or the default when unset.
+     */
+    public function forTask(string $task): string
+    {
+        $configured = (string) config("ai.tasks.{$task}", '');
+
+        if ($configured !== '' && $this->has($configured) && $this->get($configured)->available) {
+            return $configured;
+        }
+
+        return $this->defaultId();
+    }
+
     public function get(string $modelId): ModelDefinition
     {
         if (! isset($this->models[$modelId])) {
@@ -53,11 +67,15 @@ final class ModelCatalog
     /**
      * @return list<ModelDefinition>
      */
-    public function all(bool $onlyAvailable = false): array
+    public function all(bool $onlyAvailable = false, bool $includeHidden = false): array
     {
         $items = [];
 
         foreach ($this->models as $id => $config) {
+            if (! $includeHidden && ($config['hidden'] ?? false)) {
+                continue;
+            }
+
             $model = $this->hydrate((string) $id, $config);
             if ($onlyAvailable && ! $model->available) {
                 continue;

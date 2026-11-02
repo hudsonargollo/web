@@ -130,7 +130,7 @@ final class ProjectTitler
             return null;
         }
 
-        $modelId = $this->catalog->defaultId();
+        $modelId = $this->catalog->forTask('title');
         if ($modelId === '' || ! $this->catalog->has($modelId)) {
             return null;
         }

@@ -18,6 +18,16 @@ return [
     'default_model' => env('AI_DEFAULT_MODEL', 'claude-sonnet-4-5'),
 
     /*
+    | Per-task model overrides. Anything not listed here uses `default_model`.
+    | Lets cheap jobs (project titles, UI phrase translation) run on a local model
+    | while site builds stay on the cloud provider the user picked.
+    */
+    'tasks' => [
+        'title' => env('AI_TASK_MODEL_TITLE'),
+        'translate' => env('AI_TASK_MODEL_TRANSLATE'),
+    ],
+
+    /*
     | Lab credits: token-weighted spend mapped to integer credits.
     | ~1 credit for a short chat on a cheap model; mid-teens for a large codegen turn.
     */
@@ -127,6 +137,16 @@ return [
             'api_key' => env('ZHIPUAI_API_KEY'),
             'base_url' => env('ZHIPUAI_BASE_URL', 'https://open.bigmodel.cn/api/paas/v4'),
             'timeout' => (int) env('AI_PROVIDER_TIMEOUT', 600),
+        ],
+
+        'ollama' => [
+            'driver' => 'openai_compatible',
+            'label' => 'Local (Ollama)',
+            // Literal default: ModelCatalog marks a model available only when the
+            // provider key is non-empty, and Ollama ignores the Authorization header.
+            'api_key' => env('OLLAMA_API_KEY', 'local'),
+            'base_url' => env('OLLAMA_BASE_URL', 'http://172.17.0.1:11435/v1'),
+            'timeout' => (int) env('OLLAMA_TIMEOUT', 900),
         ],
 
         'google' => [
@@ -314,6 +334,27 @@ return [
             'family' => 'gemini',
             'pricing' => ['input_per_mtok' => 1.25, 'output_per_mtok' => 10.00],
             'max_output' => 65536,
+        ],
+
+        // Hidden models are routable by task (see `tasks` above) but never offered
+        // in the customer picker — CPU inference is far too slow for site builds.
+        'local-qwen-coder-7b' => [
+            'provider' => 'ollama',
+            'api_model' => 'qwen2.5-coder:7b',
+            'label' => 'Local Qwen2.5-Coder 7B',
+            'family' => 'local',
+            'pricing' => ['input_per_mtok' => 0.0, 'output_per_mtok' => 0.0],
+            'max_output' => 8192,
+            'hidden' => true,
+        ],
+        'local-qwen3-9b' => [
+            'provider' => 'ollama',
+            'api_model' => 'qwen3.5:9b',
+            'label' => 'Local Qwen3.5 9B',
+            'family' => 'local',
+            'pricing' => ['input_per_mtok' => 0.0, 'output_per_mtok' => 0.0],
+            'max_output' => 8192,
+            'hidden' => true,
         ],
 
     ],

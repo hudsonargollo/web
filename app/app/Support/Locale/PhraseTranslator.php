@@ -4,11 +4,13 @@ namespace App\Support\Locale;
 
 use App\Ai\Data\ChatMessage;
 use App\Ai\Data\ChatRequest;
+use App\Ai\Data\ModelDefinition;
 use App\Ai\Exceptions\AiException;
 use App\Ai\ModelCatalog;
 use App\Ai\PromptStore;
 use App\Ai\ProviderFactory;
 use App\Models\Language;
+use Throwable;
 
 class PhraseTranslator
 {
@@ -28,7 +30,7 @@ class PhraseTranslator
             return [];
         }
 
-        $modelId = $this->catalog->defaultId();
+        $modelId = $this->catalog->forTask('translate');
 
         if ($modelId === '' || ! $this->catalog->has($modelId)) {
             throw new AiException(__('dashboard.No active AI model is configured.'));
@@ -40,6 +42,33 @@ class PhraseTranslator
             throw new AiException(__('dashboard.The active AI model has no API key.'));
         }
 
+        try {
+            return $this->request($model, $language, $phrases);
+        } catch (Throwable $e) {
+            // The task model may be a local process that is down or swapping;
+            // fall back to the default model rather than failing the whole job.
+            $fallbackId = $this->catalog->defaultId();
+
+            if ($fallbackId === $modelId || ! $this->catalog->has($fallbackId)) {
+                throw $e;
+            }
+
+            $fallback = $this->catalog->get($fallbackId);
+
+            if (! $fallback->available) {
+                throw $e;
+            }
+
+            return $this->request($fallback, $language, $phrases);
+        }
+    }
+
+    /**
+     * @param  array<string, string>  $phrases
+     * @return array<string, string>
+     */
+    private function request(ModelDefinition $model, Language $language, array $phrases): array
+    {
         $driver = $this->providers->make($model->provider);
         $response = $driver->complete(new ChatRequest(
             apiModel: $model->apiModel,
