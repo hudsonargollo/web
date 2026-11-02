@@ -33,6 +33,7 @@ return [
     | Production builds run in the user's browser; the server only receives dist/.
     */
     'publish' => [
+        'domain' => strtolower(trim((string) env('LAB_PUBLISH_DOMAIN', ''))),
         'artifact_max_bytes' => (int) env('LAB_PUBLISH_ARTIFACT_MAX_BYTES', 50 * 1024 * 1024),
         'artifact_max_files' => (int) env('LAB_PUBLISH_ARTIFACT_MAX_FILES', 5000),
         'reserved' => [],

@@ -30,6 +30,11 @@ final class LabPublishConfig
 
     public function parentDomain(): string
     {
+        $override = strtolower(trim((string) config('lab.publish.domain', '')));
+        if ($override !== '') {
+            return rtrim($override, '.');
+        }
+
         $host = $this->appHost();
 
         if ($host === '' || filter_var($host, FILTER_VALIDATE_IP)) {
