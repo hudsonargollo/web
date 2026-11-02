@@ -48,4 +48,7 @@
             </div>
         @endif
     </div>
+    <p class="mt-10 border-t border-krikkit-line/50 pt-6 text-xs text-krikkit-subtle">
+        WebKit by <a href="https://clubemkt.digital" class="hover:text-krikkit-fg" rel="noreferrer">ClubeMkt</a>
+    </p>
 </footer>

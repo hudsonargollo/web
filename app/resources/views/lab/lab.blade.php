@@ -129,7 +129,8 @@
             <div class="relative flex h-dvh flex-col overflow-hidden bg-krikkit-canvas" role="status" aria-label="{{ __('dashboard.Loading…') }}">
                 <header class="lab-app-header flex h-14 shrink-0 items-stretch overflow-hidden border-b border-krikkit-line bg-krikkit-canvas">
                     <div class="flex w-full min-w-0 flex-[1_1_0%] items-center px-4 sm:px-6">
-                        <span class="truncate text-sm font-semibold tracking-tight text-krikkit-fg">Krikkit</span>
+                        <span class="truncate text-sm font-semibold tracking-tight text-krikkit-fg">WebKit</span>
+                        <span class="ml-1.5 shrink-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-krikkit-subtle">by ClubeMkt</span>
                         <span class="mx-2 shrink-0 text-krikkit-subtle" aria-hidden>/</span>
                         <span class="shrink-0 text-sm font-medium text-krikkit-fg">Lab</span>
                         <div class="ml-auto flex shrink-0 items-center gap-3 pl-3">

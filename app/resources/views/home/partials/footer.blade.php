@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="flex flex-col justify-between gap-3 px-6 py-6 text-xs text-krikkit-subtle sm:flex-row sm:items-center sm:px-10 lg:px-12">
-            <p>© {{ now()->year }} {{ $site->name() }}. All rights reserved.</p>
+            <p>© {{ now()->year }} WebKit by <a href="https://clubemkt.digital" class="hover:text-krikkit-fg">ClubeMkt</a>. All rights reserved.</p>
             <p class="flex gap-4">
                 @foreach ($social as $item)
                     @if (filled($item['href'] ?? null))

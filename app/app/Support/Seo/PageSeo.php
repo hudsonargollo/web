@@ -188,6 +188,12 @@ final class PageSeo
             $page = $this->fallbackPage($surface, $name, $prefix);
         }
 
+        // A page that already names the product ("WebKit by ClubeMkt") would
+        // otherwise read "WebKit | WebKit by ClubeMkt".
+        if ($page !== '' && str_contains($template, '{name}') && mb_stripos($page, $name) !== false) {
+            return $page;
+        }
+
         return $this->fillTemplate($template, $name, $page);
     }
 

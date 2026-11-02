@@ -52,7 +52,8 @@
         <div id="lab-preview-root" class="min-h-dvh bg-krikkit-canvas">
             <div class="flex h-dvh flex-col" role="status" aria-label="{{ __('dashboard.Loading…') }}">
                 <header class="flex h-12 shrink-0 items-center gap-2 border-b border-krikkit-line px-4">
-                    <span class="truncate text-sm font-semibold tracking-tight text-krikkit-fg">Krikkit</span>
+                    <span class="truncate text-sm font-semibold tracking-tight text-krikkit-fg">WebKit</span>
+                    <span class="ml-1 shrink-0 text-[10px] font-semibold uppercase tracking-[0.16em] text-krikkit-subtle">by ClubeMkt</span>
                     <span class="text-krikkit-subtle" aria-hidden>/</span>
                     <span class="text-sm font-medium text-krikkit-fg">Lab</span>
                     <span class="text-krikkit-subtle" aria-hidden>/</span>

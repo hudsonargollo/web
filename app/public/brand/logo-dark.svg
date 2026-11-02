@@ -1,6 +1,11 @@
-<svg width="1194" height="1320" viewBox="0 0 1194 1320" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 249C0 201.503 38.5035 163 86 163H363C410.496 163 449 201.504 449 249V744H0V249Z" fill="#E5E5E5"/>
-<path d="M535 1320H942.511C1024.49 1320 1059.98 1216.2 995.171 1166.01L449 743V1234C449 1281.5 487.504 1320 535 1320Z" fill="#E5E5E5"/>
-<path d="M1030 657L1030 249.591C1030 167.818 926.625 132.199 876.253 196.616L449 743L944 743C991.496 743 1030 704.496 1030 657Z" fill="#E5E5E5"/>
-<path d="M449 743H0V1320C206 1320 273.655 968.333 449 743Z" fill="#E5E5E5"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 32" role="img" aria-label="WebKit by ClubeMkt">
+  <svg x="0" y="2" width="28" height="28" viewBox="42.74 46 423.26 423.26">
+    <g fill="#D9C8AA" stroke="#6FA08D" stroke-width="8" stroke-linejoin="round">
+      <path d="M 63.93 311.75 A 200 200 0 1 1 200.25 448.07 L 214.13 414.57 A 164 164 0 1 0 97.43 297.87 Z"/>
+      <path d="M 116.11 290.13 A 144 144 0 1 1 221.87 395.90 L 235.86 362.11 A 108 108 0 1 0 149.89 276.14 Z"/>
+      <path d="M 256 256 L 52.74 340.19 L 160.50 351.50 L 171.81 459.26 Z"/>
+    </g>
+  </svg>
+  <text x="34" y="15.5" font-family="Sora, ui-sans-serif, system-ui, sans-serif" font-size="15.5" font-weight="600" letter-spacing="-0.3" fill="#F5F3EF">WebKit</text>
+  <text x="34" y="27" font-family="Sora, ui-sans-serif, system-ui, sans-serif" font-size="7.5" font-weight="600" letter-spacing="1.15" fill="#A9A29A">BY CLUBEMKT</text>
 </svg>

@@ -1,9 +1,9 @@
 @php
     $site = $site ?? app(\App\Support\Site\SiteSettings::class);
-    $logoLight = $site->logoUrl('light');
-    $logoDark = $site->logoUrl('dark');
-    $iconLight = $site->iconUrl('light');
-    $iconDark = $site->iconUrl('dark');
+    $logoLight = $site->assetUrl($site->value('general', 'logo_light'));
+    $logoDark = $site->assetUrl($site->value('general', 'logo_dark'));
+    $iconLight = $site->assetUrl($site->value('general', 'icon_light'));
+    $iconDark = $site->assetUrl($site->value('general', 'icon_dark'));
     $showLogo = $logoLight || $logoDark;
     $showIcon = ! $showLogo && ($iconLight || $iconDark);
 @endphp
@@ -27,7 +27,11 @@
         @endif
     </span>
 @else
-    <span {{ $attributes->class('inline-flex size-8 items-center justify-center rounded-lg bg-accent text-xs font-semibold tracking-tight text-accent-foreground') }}>
-        {{ strtoupper(substr($site->name(), 0, 1)) }}
+    <span {{ $attributes->class('inline-flex items-center gap-2.5') }}>
+        <img src="{{ asset('brand/clubemkt-mark.svg').'?v='.\App\Support\Site\SiteSettings::BUNDLED_VERSION }}" alt="" aria-hidden="true" class="size-8 shrink-0">
+        <span class="flex min-w-0 flex-col leading-none">
+            <span class="truncate text-[15px] font-semibold tracking-tight text-krikkit-fg">WebKit</span>
+            <span class="mt-1 truncate text-[9px] font-semibold uppercase tracking-[0.18em] text-krikkit-subtle">by ClubeMkt</span>
+        </span>
     </span>
 @endif

@@ -134,7 +134,7 @@ return [
     'Publish' => 'Publish',
     'Account' => 'Account',
     'What is Lab?' => 'What is Lab?',
-    'Lab is the Krikkit workspace where a written brief becomes a working front-end — files, preview, and publish in one desk.' => 'Lab is the Krikkit workspace where a written brief becomes a working front-end — files, preview, and publish in one desk.',
+    'Lab is the Krikkit workspace where a written brief becomes a working front-end — files, preview, and publish in one desk.' => 'Lab is the WebKit workspace where a written brief becomes a working front-end — files, preview, and publish in one desk.',
     'How is Lab different from a page builder?' => 'How is Lab different from a page builder?',
     'Builders hide the markup. Lab writes files you can open. The canvas is a preview of those files, not a separate document.' => 'Builders hide the markup. Lab writes files you can open. The canvas is a preview of those files, not a separate document.',
     'Who is Lab for?' => 'Who is Lab for?',
