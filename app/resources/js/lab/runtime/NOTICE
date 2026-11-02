@@ -1,0 +1,9 @@
+DeepThought Engine (Krikkit core)
+Browser-native Node.js runtime for Krikkit Lab.
+
+Copyright (c) 2026 Deep42. All rights reserved.
+
+DeepThought Engine powers in-browser preview, shell, npm installs, and virtual
+HTTP servers inside Krikkit Lab. Service worker path: /__deepthought_sw__.js.
+
+See LICENSE for license terms.

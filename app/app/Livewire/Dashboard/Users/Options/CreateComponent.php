@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Livewire\Dashboard\Users\Options;
+
+use App\Entitlement\PlanAssigner;
+use App\Enums\UserStatus;
+use App\Livewire\Dashboard\Users\Traits\ManagesUserForm;
+use App\Models\AccessRole;
+use App\Models\EntitlementPlan;
+use App\Models\User;
+use App\Support\Geography\Countries;
+use App\Support\Ui\Pulse;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Gate;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Lazy;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+
+#[Lazy]
+#[Layout('components.layouts.dashboard', ['skeleton' => 'form'])]
+class CreateComponent extends Component
+{
+    use ManagesUserForm;
+    use WithFileUploads;
+
+    public function placeholder(): View
+    {
+        return view('components.dashboard.livewirePlaceholder', ['variant' => 'form'])
+            ->layoutData($this->layoutData());
+    }
+
+    public function layoutData(): array
+    {
+        return [
+            'title' => __('dashboard.New user'),
+            'breadcrumbs' => [
+                ['label' => __('dashboard.Users'), 'href' => route('dashboard.users.index')],
+                ['label' => __('dashboard.New'), 'current' => true],
+            ],
+        ];
+    }
+
+    public function mount(): void
+    {
+        Gate::authorize('users.compose');
+
+        $memberId = AccessRole::query()->where('slug', 'member')->value('id');
+        $this->accessRoleId = $memberId !== null ? (string) $memberId : '';
+        $this->status = UserStatus::Active->value;
+        app(PlanAssigner::class)->ensureCatalog();
+        $this->planPublicId = (string) (EntitlementPlan::query()->where('is_default', true)->value('public_id') ?: '');
+    }
+
+    public function save(): void
+    {
+        Gate::authorize('users.compose');
+
+        $payload = $this->validatedUserPayload();
+
+        $user = User::query()->create([
+            ...$payload,
+            'email_verified_at' => now(),
+        ]);
+        $this->persistPlan($user);
+
+        $this->pulseOk(__('dashboard.User created.'));
+        $this->redirect(route('dashboard.users.index'), navigate: true);
+    }
+
+    public function render(): View
+    {
+        return view('livewire.dashboard.users.options.create', [
+            'roles' => AccessRole::query()->orderBy('title')->get(),
+            'plans' => EntitlementPlan::assignable(),
+            'countries' => Countries::options(),
+            'statuses' => UserStatus::cases(),
+        ])->layoutData($this->layoutData());
+    }
+
+    private function pulseOk(string $copy): void
+    {
+        $packet = Pulse::craft($copy, __('dashboard.Saved'), 'ok');
+        $this->js(
+            'window.dispatchEvent(new CustomEvent('.json_encode(Pulse::EVENT).', { detail: '.json_encode($packet).' }))'
+        );
+    }
+}

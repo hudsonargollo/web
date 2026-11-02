@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-hePW80VL.js";import{n as t}from"./lab-runtime-BJ6_GN-U.js";var n=e({setRuntimeHost:()=>t});export{n as t};

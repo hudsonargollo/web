@@ -1,0 +1,1150 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/krikkit/**/*.blade.php';
+@source '../views/components/**/*.blade.php';
+@source '../views/dashboard/**/*.blade.php';
+@source '../views/home/**/*.blade.php';
+@source '../views/livewire/**/*.blade.php';
+@source '../views/lab/**/*.blade.php';
+@source '../js/lab/**/*.{js,jsx}';
+@source '../js/lab/lib/**/*.js';
+@source '../../node_modules/streamdown/dist/*.js';
+@source '../../node_modules/@streamdown/code/dist/*.js';
+@source '../../node_modules/@streamdown/math/dist/*.js';
+@source '../../node_modules/@streamdown/mermaid/dist/*.js';
+
+/*
+ * Theme Customizer accents — force-emit CSS vars (swatches + runtime
+ * --color-accent: var(--color-{id}-500)). Unused scales are otherwise tree-shaken.
+ */
+@source inline('{bg,text}-{red,orange,amber,yellow,lime,green,emerald,teal,cyan,sky,blue,indigo,violet,purple,fuchsia,pink,rose}-{300,400,500,600,700}');
+
+@custom-variant dark (&:is(.dark, .dark *));
+
+/* Always emit — used by theme customizer swatches + runtime base remap */
+@theme static {
+    /* Default neutral-900 = #1a1a1a (cards / inputs). Theme Customizer remaps via --color-neutral-*. */
+    --color-neutral-900: #1a1a1a;
+
+    --color-gray-50: oklch(98.5% 0.002 247.839);
+    --color-gray-100: oklch(96.7% 0.003 264.542);
+    --color-gray-200: oklch(92.8% 0.006 264.531);
+    --color-gray-300: oklch(87.2% 0.01 258.338);
+    --color-gray-400: oklch(70.7% 0.022 261.325);
+    --color-gray-500: oklch(55.1% 0.027 264.364);
+    --color-gray-600: oklch(44.6% 0.03 256.802);
+    --color-gray-700: oklch(37.3% 0.034 259.733);
+    --color-gray-800: oklch(27.8% 0.033 256.848);
+    --color-gray-900: oklch(21% 0.034 264.665);
+    --color-gray-950: oklch(13% 0.028 261.692);
+
+    --color-zinc-50: oklch(98.5% 0 none);
+    --color-zinc-100: oklch(96.7% 0.001 286.375);
+    --color-zinc-200: oklch(92% 0.004 286.32);
+    --color-zinc-300: oklch(87.1% 0.006 286.286);
+    --color-zinc-400: oklch(70.5% 0.015 286.067);
+    --color-zinc-500: oklch(55.2% 0.016 285.938);
+    --color-zinc-600: oklch(44.2% 0.017 285.786);
+    --color-zinc-700: oklch(37% 0.013 285.805);
+    --color-zinc-800: oklch(27.4% 0.006 286.033);
+    --color-zinc-900: oklch(21% 0.006 285.885);
+    --color-zinc-950: oklch(14.1% 0.005 285.823);
+
+    --color-slate-50: oklch(98.4% 0.003 247.858);
+    --color-slate-100: oklch(96.8% 0.007 247.896);
+    --color-slate-200: oklch(92.9% 0.013 255.508);
+    --color-slate-300: oklch(86.9% 0.022 252.894);
+    --color-slate-400: oklch(70.4% 0.04 256.788);
+    --color-slate-500: oklch(55.4% 0.046 257.417);
+    --color-slate-600: oklch(44.6% 0.043 257.281);
+    --color-slate-700: oklch(37.2% 0.044 257.287);
+    --color-slate-800: oklch(27.9% 0.041 260.031);
+    --color-slate-900: oklch(20.8% 0.042 265.755);
+    --color-slate-950: oklch(12.9% 0.042 264.695);
+
+    --color-stone-50: oklch(98.5% 0.001 106.423);
+    --color-stone-100: oklch(97% 0.001 106.424);
+    --color-stone-200: oklch(92.3% 0.003 48.717);
+    --color-stone-300: oklch(86.9% 0.005 56.366);
+    --color-stone-400: oklch(70.9% 0.01 56.259);
+    --color-stone-500: oklch(55.3% 0.013 58.071);
+    --color-stone-600: oklch(44.4% 0.011 73.639);
+    --color-stone-700: oklch(37.4% 0.01 67.558);
+    --color-stone-800: oklch(26.8% 0.007 34.298);
+    --color-stone-900: oklch(21.6% 0.006 56.043);
+    --color-stone-950: oklch(14.7% 0.004 49.25);
+
+    --color-mauve-50: oklch(98.5% 0 none);
+    --color-mauve-100: oklch(96% 0.003 325.6);
+    --color-mauve-200: oklch(92.2% 0.005 325.62);
+    --color-mauve-300: oklch(86.5% 0.012 325.68);
+    --color-mauve-400: oklch(71.1% 0.019 323.02);
+    --color-mauve-500: oklch(54.2% 0.034 322.5);
+    --color-mauve-600: oklch(43.5% 0.029 321.78);
+    --color-mauve-700: oklch(36.4% 0.029 323.89);
+    --color-mauve-800: oklch(26.3% 0.024 320.12);
+    --color-mauve-900: oklch(21.2% 0.019 322.12);
+    --color-mauve-950: oklch(14.5% 0.008 326);
+
+    --color-olive-50: oklch(98.8% 0.003 106.5);
+    --color-olive-100: oklch(96.6% 0.005 106.5);
+    --color-olive-200: oklch(93% 0.007 106.5);
+    --color-olive-300: oklch(88% 0.011 106.6);
+    --color-olive-400: oklch(73.7% 0.021 106.9);
+    --color-olive-500: oklch(58% 0.031 107.3);
+    --color-olive-600: oklch(46.6% 0.025 107.3);
+    --color-olive-700: oklch(39.4% 0.023 107.4);
+    --color-olive-800: oklch(28.6% 0.016 107.4);
+    --color-olive-900: oklch(22.8% 0.013 107.4);
+    --color-olive-950: oklch(15.3% 0.006 107.1);
+
+    --color-mist-50: oklch(98.7% 0.002 197.1);
+    --color-mist-100: oklch(96.3% 0.002 197.1);
+    --color-mist-200: oklch(92.5% 0.005 214.3);
+    --color-mist-300: oklch(87.2% 0.007 219.6);
+    --color-mist-400: oklch(72.3% 0.014 214.4);
+    --color-mist-500: oklch(56% 0.021 213.5);
+    --color-mist-600: oklch(45% 0.017 213.2);
+    --color-mist-700: oklch(37.8% 0.015 216);
+    --color-mist-800: oklch(27.5% 0.011 216.9);
+    --color-mist-900: oklch(21.8% 0.008 223.9);
+    --color-mist-950: oklch(14.8% 0.004 228.8);
+
+    --color-taupe-50: oklch(98.6% 0.002 67.8);
+    --color-taupe-100: oklch(96% 0.002 17.2);
+    --color-taupe-200: oklch(92.2% 0.005 34.3);
+    --color-taupe-300: oklch(86.8% 0.007 39.5);
+    --color-taupe-400: oklch(71.4% 0.014 41.2);
+    --color-taupe-500: oklch(54.7% 0.021 43.1);
+    --color-taupe-600: oklch(43.8% 0.017 39.3);
+    --color-taupe-700: oklch(36.7% 0.016 35.7);
+    --color-taupe-800: oklch(26.8% 0.011 36.5);
+    --color-taupe-900: oklch(21.4% 0.009 43.1);
+    --color-taupe-950: oklch(14.7% 0.004 49.3);
+}
+
+@theme {
+    --font-sans: 'Sora', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /*
+     * Light ladder:
+     * canvas/sidebar/page = white · surface/card/table = stone-50 · soft = stone-100
+     */
+    --color-krikkit-fg: var(--color-neutral-900);
+    --color-krikkit-fg-soft: var(--color-neutral-700);
+    --color-krikkit-muted: var(--color-neutral-500);
+    --color-krikkit-subtle: var(--color-neutral-400);
+    --color-krikkit-canvas: var(--color-white);
+    --color-krikkit-surface: var(--color-stone-50);
+    --color-krikkit-soft: var(--color-stone-100);
+    --color-krikkit-line: var(--color-stone-200);
+    --color-krikkit-fill: var(--color-neutral-900);
+    --color-krikkit-on-fill: var(--color-white);
+
+    --color-krikkit-ink: var(--color-krikkit-fg);
+    --color-krikkit-accent: var(--color-accent);
+    --color-krikkit-accent-soft: var(--color-stone-100);
+    --color-krikkit-danger: #dc2626;
+    --color-krikkit-warn: #d97706;
+    --color-krikkit-ok: #16a34a;
+
+    /* Flux-style accent — neutral tracks base remap */
+    --color-accent: var(--color-neutral-800);
+    --color-accent-content: var(--color-neutral-800);
+    --color-accent-foreground: var(--color-white);
+
+    /* Streamdown / shadcn token aliases → Krikkit surfaces */
+    --color-background: var(--color-krikkit-canvas);
+    --color-foreground: var(--color-krikkit-fg);
+    --color-card: var(--color-krikkit-surface);
+    --color-card-foreground: var(--color-krikkit-fg);
+    --color-muted: var(--color-krikkit-soft);
+    --color-muted-foreground: var(--color-krikkit-muted);
+    --color-border: var(--color-krikkit-line);
+    --color-input: var(--color-krikkit-line);
+    --color-primary: var(--color-krikkit-fill);
+    --color-primary-foreground: var(--color-krikkit-on-fill);
+    --color-sidebar: var(--color-krikkit-canvas);
+}
+
+@layer theme {
+    .dark {
+        /*
+         * Dark ladder: canvas page · surface/card/inputs = neutral-900 (#1a1a1a)
+         * Tracks --color-neutral-* so Theme Customizer base remap applies.
+         */
+        --color-krikkit-fg: var(--color-neutral-50);
+        --color-krikkit-fg-soft: var(--color-neutral-300);
+        --color-krikkit-muted: var(--color-neutral-400);
+        --color-krikkit-subtle: var(--color-neutral-500);
+        --color-krikkit-canvas: var(--color-neutral-950);
+        --color-krikkit-surface: var(--color-neutral-900);
+        --color-krikkit-soft: var(--color-neutral-800);
+        --color-krikkit-line: var(--color-neutral-800);
+        --color-krikkit-fill: var(--color-white);
+        --color-krikkit-on-fill: var(--color-neutral-900);
+        --color-krikkit-accent-soft: var(--color-neutral-800);
+
+        --color-accent: var(--color-white);
+        --color-accent-content: var(--color-white);
+        --color-accent-foreground: var(--color-neutral-900);
+
+        --color-background: var(--color-krikkit-canvas);
+        --color-foreground: var(--color-krikkit-fg);
+        --color-card: var(--color-krikkit-surface);
+        --color-card-foreground: var(--color-krikkit-fg);
+        --color-muted: var(--color-krikkit-soft);
+        --color-muted-foreground: var(--color-krikkit-muted);
+        --color-border: var(--color-krikkit-line);
+        --color-input: var(--color-krikkit-line);
+        --color-primary: var(--color-krikkit-fill);
+        --color-primary-foreground: var(--color-krikkit-on-fill);
+        --color-sidebar: var(--color-krikkit-canvas);
+    }
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Range slider — Theme Customizer accent + surface tokens (matches progress). */
+.krikkit-slider {
+    accent-color: var(--color-accent);
+}
+
+.krikkit-slider::-webkit-slider-runnable-track {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: linear-gradient(
+        to right,
+        var(--color-accent) var(--krikkit-slider-fill, 0%),
+        var(--color-krikkit-soft) var(--krikkit-slider-fill, 0%)
+    );
+}
+
+.krikkit-slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    margin-top: -0.25rem;
+    border-radius: 999px;
+    background: var(--color-accent);
+    border: 2px solid var(--color-krikkit-canvas);
+}
+
+.krikkit-slider::-moz-range-track {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--color-krikkit-soft);
+}
+
+.krikkit-slider::-moz-range-progress {
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--color-accent);
+}
+
+.krikkit-slider::-moz-range-thumb {
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--color-krikkit-canvas);
+    border-radius: 999px;
+    background: var(--color-accent);
+}
+
+/* Lab: interactive chrome always shows a pointer. */
+#lab-root :is(a, button, summary, [role='button'], label[for]) {
+    cursor: pointer;
+}
+
+#lab-root :is(button, [role='button']):disabled {
+    cursor: not-allowed;
+}
+
+/* Lab CodeMirror — workspace chrome; selection/active line use Theme Customizer accent. */
+.lab-codemirror .cm-editor,
+.lab-codemirror .cm-scroller,
+.lab-codemirror .cm-gutters,
+.lab-codemirror .cm-gutter {
+    background-color: var(--color-krikkit-canvas) !important;
+}
+
+.lab-codemirror .cm-gutters {
+    border: none !important;
+    border-right: 1px solid var(--color-krikkit-line) !important;
+    color: var(--color-krikkit-subtle) !important;
+}
+
+.lab-codemirror .cm-activeLine {
+    background-color: color-mix(in oklab, var(--color-accent) 12%, transparent) !important;
+}
+
+.lab-codemirror .cm-activeLineGutter {
+    background-color: color-mix(in oklab, var(--color-accent) 12%, transparent) !important;
+    color: var(--color-accent-content) !important;
+}
+
+.lab-codemirror .cm-selectionLayer .cm-selectionBackground,
+.lab-codemirror .cm-editor.cm-focused > .cm-scroller > .cm-selectionLayer .cm-selectionBackground {
+    background-color: color-mix(in oklab, var(--color-accent) 38%, transparent) !important;
+}
+
+@keyframes lab-bubble-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes lab-crest-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes lab-repair-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.55;
+    }
+}
+
+.lab-repair-pulse {
+    animation: lab-repair-pulse 1.6s ease-in-out infinite;
+}
+
+/* Lab top chrome. */
+.lab-app-header {
+    background-color: var(--color-krikkit-canvas);
+}
+
+.lab-layout-pane {
+    transition:
+        flex-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-shrink 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-basis 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        max-width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        max-height 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.45s ease,
+        background-color 0.45s ease,
+        min-height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lab-no-transition .lab-layout-pane {
+    transition: none !important;
+}
+
+.lab-layout-pane.lab-rail-resizing {
+    transition: none !important;
+}
+
+/* Rail morph stays intact; only border-color is instant (no black flash). */
+.lab-layout-pane.lab-chat-rail {
+    transition:
+        flex-grow 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-shrink 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        flex-basis 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        max-width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        max-height 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        margin 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        padding 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        background-color 0.45s ease,
+        min-height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Whole words drop to the next line — markdown host opts out below. */
+.lab-chat-md-host {
+    white-space: normal;
+}
+
+/* Streamdown: keep Lab chat on Krikkit surfaces; no shadows. */
+.lab-chat-md-host .lab-chat-md {
+    color: var(--color-krikkit-fg-soft);
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+}
+
+.lab-chat-md-host .lab-chat-md > :first-child {
+    margin-top: 0;
+}
+
+.lab-chat-md-host .lab-chat-md p {
+    margin-top: 0;
+    margin-bottom: 0.65em;
+}
+
+.lab-chat-md-host .lab-chat-md p:last-child {
+    margin-bottom: 0;
+}
+
+.lab-chat-md-host .lab-chat-md :is(h1, h2, h3, h4, strong) {
+    color: var(--color-krikkit-fg);
+}
+
+.lab-chat-md-host .lab-chat-md :is(.shadow-sm, .shadow-lg, [class*='shadow-']) {
+    box-shadow: none !important;
+}
+
+/* Mermaid diagram chrome — same language as lab-tool-panel / files headers.
+   Streamdown parks actions in a sticky -mt-10 sibling (not inside the label row). */
+.lab-chat-md-host [data-streamdown='mermaid-block'] {
+    position: relative !important;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+    gap: 0 !important;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-krikkit-line) !important;
+    background-color: var(--color-krikkit-surface) !important;
+    color: var(--color-krikkit-fg);
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Label row = true header bar. */
+.lab-chat-md-host [data-streamdown='mermaid-block'] > div:first-child {
+    display: flex !important;
+    height: 2.25rem !important;
+    min-height: 2.25rem !important;
+    align-items: center !important;
+    border-bottom: 1px solid var(--color-krikkit-line);
+    background-color: var(--color-krikkit-surface);
+    padding: 0 6.5rem 0 0.75rem !important; /* room for 3 absolute action icons */
+    color: var(--color-krikkit-subtle) !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block'] > div:first-child > span {
+    margin: 0 !important;
+    font-family: inherit !important;
+    font-size: 0 !important;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: transparent !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block'] > div:first-child > span::after {
+    content: 'Diagram';
+    font-size: 11px;
+    line-height: 1;
+    color: var(--color-krikkit-subtle);
+}
+
+/* Sticky -mt-10 wrapper → pin into the header bar. */
+.lab-chat-md-host [data-streamdown='mermaid-block'] > div:has(> [data-streamdown='mermaid-block-actions']) {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    z-index: 2;
+    display: flex !important;
+    height: 2.25rem !important;
+    width: auto !important;
+    margin: 0 !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    padding: 0 0.5rem 0 0 !important;
+    pointer-events: none;
+    background: transparent !important;
+    border: none !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block-actions'] {
+    pointer-events: auto;
+    display: inline-flex !important;
+    height: 1.75rem !important;
+    align-items: center !important;
+    gap: 0.125rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block-actions'] button {
+    display: inline-flex !important;
+    height: 1.75rem !important;
+    width: 1.75rem !important;
+    flex-shrink: 0;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0.375rem !important;
+    background: transparent !important;
+    color: var(--color-krikkit-muted) !important;
+    box-shadow: none !important;
+    line-height: 0 !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block-actions'] button:hover {
+    background-color: var(--color-krikkit-soft) !important;
+    color: var(--color-krikkit-fg) !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block-actions'] button svg {
+    display: block !important;
+    height: 0.875rem !important;
+    width: 0.875rem !important;
+}
+
+/* Chart body (last child) — kill Streamdown’s nested border. */
+.lab-chat-md-host [data-streamdown='mermaid-block'] > div:last-child {
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background-color: var(--color-krikkit-canvas) !important;
+    padding: 1rem 0.75rem !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block'] svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin-inline: auto;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block'] svg .node Label,
+.lab-chat-md-host [data-streamdown='mermaid-block'] svg .node label,
+.lab-chat-md-host [data-streamdown='mermaid-block'] svg .node span,
+.lab-chat-md-host [data-streamdown='mermaid-block'] svg .node .label {
+    font-family: ui-sans-serif, system-ui, sans-serif !important;
+}
+
+.lab-chat-md-host [data-streamdown='mermaid-block'] svg [id^='edgeLabel'] rect,
+.lab-chat-md-host [data-streamdown='mermaid-block'] svg .edgeLabel rect {
+    fill: var(--color-krikkit-surface) !important;
+    stroke: var(--color-krikkit-line) !important;
+}
+
+.lab-bubble-in {
+    animation: lab-bubble-in 0.35s ease both;
+}
+
+/* Default opacity:1 so off-screen / interrupted animations never leave chrome invisible after F5. */
+.lab-crest-enter {
+    opacity: 1;
+    animation: lab-crest-enter 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Hydrated history — no entrance animation (avoids fill-mode opacity:0 stuck above the fold). */
+.lab-crest-enter--static {
+    opacity: 1;
+    animation: none;
+}
+
+@keyframes lab-inspect-pop {
+    from {
+        opacity: 1;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.lab-inspect-pop {
+    opacity: 1;
+    animation: lab-inspect-pop 200ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes lab-bucket-toss-in {
+    from {
+        opacity: 0;
+        transform: translateY(var(--lab-bucket-from)) scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(var(--lab-bucket-scale));
+    }
+}
+
+@keyframes lab-bucket-toss-out {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(var(--lab-bucket-scale));
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(var(--lab-bucket-to)) scale(0.8);
+    }
+}
+
+.lab-bucket-chip {
+    --lab-bucket-from: -6.25rem;
+    --lab-bucket-to: 8.25rem;
+    --lab-bucket-scale: 1.18;
+}
+
+.lab-bucket-chip--in {
+    animation: lab-bucket-toss-in 0.55s cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
+}
+
+.lab-bucket-chip--out {
+    animation: lab-bucket-toss-out 0.8s cubic-bezier(0.55, 0.06, 0.68, 0.19) both;
+}
+
+@media (max-width: 767px) {
+    .lab-bucket-chip {
+        --lab-bucket-from: -4.25rem;
+        --lab-bucket-to: 6.25rem;
+        --lab-bucket-scale: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lab-bucket-chip--in,
+    .lab-bucket-chip--out {
+        animation: none;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes lab-pixel-on {
+    0%,
+    100% {
+        opacity: 0.15;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.lab-pixel-cell {
+    opacity: 0.15;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lab-pixel-cell {
+        animation: none !important;
+        opacity: 0.15 !important;
+    }
+}
+
+@keyframes lab-gate-timer {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+.lab-gate-timer-bar {
+    width: 100%;
+    animation: lab-gate-timer 15s linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lab-gate-timer-bar {
+        animation: none;
+        width: 100%;
+    }
+}
+
+@keyframes lab-shiny-sweep {
+    0% {
+        background-position: 150% center;
+    }
+
+    100% {
+        background-position: -50% center;
+    }
+}
+
+@keyframes lab-shiny-sweep-right {
+    0% {
+        background-position: -50% center;
+    }
+
+    100% {
+        background-position: 150% center;
+    }
+}
+
+@keyframes lab-shiny-sweep-yoyo {
+    0% {
+        background-position: 150% center;
+    }
+
+    50% {
+        background-position: -50% center;
+    }
+
+    100% {
+        background-position: 150% center;
+    }
+}
+
+.lab-shiny-text {
+    /* Fallback color first — overflow:hidden + background-clip:text can wipe the fill. */
+    color: var(--lab-shiny-color, var(--color-krikkit-muted));
+    background-image: linear-gradient(
+        var(--lab-shiny-spread, 75deg),
+        var(--lab-shiny-color, var(--color-krikkit-muted)) 0%,
+        var(--lab-shiny-color, var(--color-krikkit-muted)) 35%,
+        var(--lab-shiny-shine, var(--color-krikkit-fg)) 50%,
+        var(--lab-shiny-color, var(--color-krikkit-muted)) 65%,
+        var(--lab-shiny-color, var(--color-krikkit-muted)) 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    overflow: visible;
+    animation-name: lab-shiny-sweep;
+    animation-duration: var(--lab-shiny-speed, 4.1s);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-delay: var(--lab-shiny-delay, 0s);
+}
+
+.lab-shiny-text--right {
+    animation-name: lab-shiny-sweep-right;
+}
+
+.lab-shiny-text--yoyo {
+    animation-name: lab-shiny-sweep-yoyo;
+}
+
+@keyframes lab-think-caret {
+    0%,
+    45% {
+        opacity: 1;
+    }
+
+    55%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.lab-think-caret {
+    animation: lab-think-caret 0.9s steps(1) infinite;
+    color: var(--color-krikkit-subtle);
+}
+
+/* Hover popover — overlays chat; no layout shift. */
+.lab-tool-popover {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px) scale(0.98);
+    transform-origin: top left;
+    transition:
+        opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.22s;
+}
+
+.lab-tool-popover--open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+}
+
+/* Thinking / Write File expand — height + soft fade (shelf slack absorbs the growth).
+   Never set display:grid on the base rule — it overrides native [hidden] and
+   0fr still leaks under Wrote rows (uneven gap vs heal / sibling tools). */
+.lab-tool-collapse {
+    overflow: hidden;
+    transition: grid-template-rows 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lab-tool-collapse[data-state='closed'],
+.lab-tool-collapse[hidden] {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+}
+
+.lab-tool-collapse[data-state='open']:not([hidden]) {
+    display: grid;
+    grid-template-rows: 1fr;
+}
+
+.lab-tool-collapse__clip {
+    min-height: 0;
+    overflow: hidden;
+}
+
+.lab-tool-collapse__body {
+    margin-top: 0;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition:
+        opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        margin-top 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lab-tool-collapse[data-state='open'] .lab-tool-collapse__body {
+    margin-top: 0.5rem;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Write File tool — dense unified diff (status red/green allowed). */
+.lab-write-row--del {
+    background-color: color-mix(in oklab, var(--color-red-500) 14%, transparent);
+}
+
+.lab-write-row--add {
+    background-color: color-mix(in oklab, var(--color-emerald-500) 14%, transparent);
+}
+
+/* Read File tool — accent wash (never +/− diff colors). */
+.lab-write-row--read {
+    background-color: color-mix(in oklab, var(--color-accent) 10%, transparent);
+    border-left: 2px solid var(--color-accent);
+}
+
+/* Write-tool syntax tokens (aligned with CodeCanvas role map). */
+.lab-tok-keyword { color: #6d28d9; }
+.lab-tok-operator { color: #3f3f46; }
+.lab-tok-bool { color: #c2410c; }
+.lab-tok-number { color: #b45309; }
+.lab-tok-string { color: #047857; }
+.lab-tok-comment { color: #94a3b8; font-style: italic; }
+.lab-tok-property { color: #0369a1; }
+.lab-tok-variable { color: #18181b; }
+.lab-tok-definition { color: #1e3a8a; }
+.lab-tok-function { color: #1d4ed8; }
+.lab-tok-type { color: #a16207; }
+.lab-tok-tag { color: #be123c; }
+.lab-tok-attr { color: #0e7490; }
+.lab-tok-punct { color: #71717a; }
+.lab-tok-meta { color: #94a3b8; }
+.lab-tok-invalid { color: #dc2626; }
+
+.dark .lab-tok-keyword { color: #d8b4fe; }
+.dark .lab-tok-operator { color: #e4e4e7; }
+.dark .lab-tok-bool { color: #fdba74; }
+.dark .lab-tok-number { color: #fbbf24; }
+.dark .lab-tok-string { color: #6ee7b7; }
+.dark .lab-tok-comment { color: #71717a; }
+.dark .lab-tok-property { color: #7dd3fc; }
+.dark .lab-tok-variable { color: #f4f4f5; }
+.dark .lab-tok-definition { color: #e0e7ff; }
+.dark .lab-tok-function { color: #93c5fd; }
+.dark .lab-tok-type { color: #fde68a; }
+.dark .lab-tok-tag { color: #fb7185; }
+.dark .lab-tok-attr { color: #67e8f9; }
+.dark .lab-tok-punct { color: #a1a1aa; }
+.dark .lab-tok-meta { color: #737373; }
+.dark .lab-tok-invalid { color: #f87171; }
+
+.lab-write-diff {
+    overflow-x: auto;
+}
+
+.lab-write-diff .lab-write-row {
+    min-width: max-content;
+    width: 100%;
+}
+
+/* Thread scroller owns Y; browser anchoring fights reply-shelf min-height. */
+.lab-thread-stack {
+    position: relative;
+    overflow-anchor: none;
+}
+
+.lab-thread-stack > .lab-reply-shelf {
+    overflow-anchor: none;
+}
+
+/*
+ * Files tree guides — continuous border on each open branch.
+ * Line sits under the chevron center; padding keeps it clear of icons.
+ */
+.lab-tree-root {
+    --lab-tree-pad-x: 0.75rem; /* matches row px-3 */
+    --lab-tree-twist: 0.875rem; /* 14px chevron */
+    --lab-tree-gap: 0.625rem; /* air between rail and icons */
+}
+
+.lab-tree-root--compact {
+    --lab-tree-pad-x: 0.625rem; /* matches row px-2.5 */
+}
+
+.lab-tree-branch {
+    margin-left: calc(var(--lab-tree-pad-x) + (var(--lab-tree-twist) / 2));
+    padding-left: calc((var(--lab-tree-twist) / 2) + var(--lab-tree-gap));
+    border-left: 1px solid var(--color-krikkit-line);
+}
+
+/* Preview chrome status — fade between messages, then quiet settle to dot. */
+.lab-status-label {
+    display: inline-block;
+    transition:
+        max-width 0.28s ease,
+        margin 0.28s ease,
+        opacity 0.16s ease;
+}
+
+.lab-status-label--open {
+    max-width: 5.5rem;
+    margin-right: 0.375rem;
+}
+
+.lab-status-label--closed {
+    max-width: 0;
+    margin-right: 0;
+    opacity: 0;
+}
+
+.lab-status-label--opaque {
+    opacity: 1;
+}
+
+.lab-status-label--faded {
+    opacity: 0;
+}
+
+.lab-status-label--closed.lab-status-label--opaque {
+    opacity: 0;
+}
+
+.krikkit-home-dots {
+    background-image: radial-gradient(
+        circle at 1px 1px,
+        color-mix(in oklab, var(--color-accent) 28%, transparent) 1px,
+        transparent 0
+    );
+    background-size: 22px 22px;
+}
+
+.krikkit-home-lines {
+    background-image: repeating-linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--color-accent) 16%, transparent) 0,
+        color-mix(in oklab, var(--color-accent) 16%, transparent) 1px,
+        transparent 1px,
+        transparent 8px
+    );
+}
+
+.krikkit-home-pinstripe {
+    background-image: repeating-linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--color-accent) 22%, transparent) 0,
+        color-mix(in oklab, var(--color-accent) 22%, transparent) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+@keyframes krikkit-home-marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.krikkit-home-marquee {
+    animation: krikkit-home-marquee 42s linear infinite;
+}
+
+.krikkit-home-marquee:hover {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .krikkit-home-marquee {
+        animation: none;
+    }
+}
+
+.krikkit-home-fold {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+        grid-template-rows 280ms ease-out,
+        opacity 220ms ease-out;
+}
+
+.krikkit-home-fold[data-open="1"] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .krikkit-home-fold {
+        transition: none;
+    }
+}
+
+@keyframes krikkit-walk-fill {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+.krikkit-walk-progress {
+    transform: scaleX(0);
+    animation: krikkit-walk-fill var(--walk-ms, 5s) linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .krikkit-walk-progress {
+        animation: none;
+        transform: scaleX(1);
+    }
+}
+
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(161 161 170 / 0.55) transparent;
+}
+
+.dark * {
+    scrollbar-color: rgb(113 113 122 / 0.65) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgb(161 161 170 / 0.55);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(113 113 122 / 0.85);
+}
+
+.dark *::-webkit-scrollbar-thumb {
+    background-color: rgb(113 113 122 / 0.65);
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(161 161 170 / 0.85);
+}
+
+.krikkit-scroll-hover {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.krikkit-scroll-hover:hover {
+    scrollbar-color: rgb(161 161 170 / 0.55) transparent;
+}
+
+.dark .krikkit-scroll-hover:hover {
+    scrollbar-color: rgb(113 113 122 / 0.65) transparent;
+}
+
+.krikkit-scroll-hover::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}
+
+.krikkit-scroll-hover:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(161 161 170 / 0.55);
+}
+
+.dark .krikkit-scroll-hover:hover::-webkit-scrollbar-thumb {
+    background-color: rgb(113 113 122 / 0.65);
+}
+
+/* Lab editor / terminal — same thin pill as dashboard (CodeMirror & xterm skip * in some engines). */
+.lab-codemirror .cm-scroller,
+.xterm .xterm-viewport {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(161 161 170 / 0.55) transparent;
+}
+
+.dark .lab-codemirror .cm-scroller,
+.dark .xterm .xterm-viewport {
+    scrollbar-color: rgb(113 113 122 / 0.65) transparent;
+}
+
+.lab-codemirror .cm-scroller::-webkit-scrollbar,
+.xterm .xterm-viewport::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.lab-codemirror .cm-scroller::-webkit-scrollbar-track,
+.xterm .xterm-viewport::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.lab-codemirror .cm-scroller::-webkit-scrollbar-thumb,
+.xterm .xterm-viewport::-webkit-scrollbar-thumb {
+    background-color: rgb(161 161 170 / 0.55);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+
+.lab-codemirror .cm-scroller::-webkit-scrollbar-thumb:hover,
+.xterm .xterm-viewport::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(113 113 122 / 0.85);
+}
+
+.dark .lab-codemirror .cm-scroller::-webkit-scrollbar-thumb,
+.dark .xterm .xterm-viewport::-webkit-scrollbar-thumb {
+    background-color: rgb(113 113 122 / 0.65);
+}
+
+.dark .lab-codemirror .cm-scroller::-webkit-scrollbar-thumb:hover,
+.dark .xterm .xterm-viewport::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(161 161 170 / 0.85);
+}

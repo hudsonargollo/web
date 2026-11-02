@@ -1,0 +1,53 @@
+# Krikkit
+
+> Krikkit documentation by deep42.
+
+## Documentation
+
+- [Introduction](https://doc.krikkit.space): Krikkit — AI-assisted web project builder SaaS by deep42 (Laravel 13 + Livewire)
+- [Installation](https://doc.krikkit.space/installation): Step-by-step guide to install Krikkit from CodeCanyon on your server.
+- [Overview](https://doc.krikkit.space/studio-overview): Authenticated home for Krikkit users — projects, starred work, and quick entry to the Lab.
+- [Projects](https://doc.krikkit.space/projects): Create, title, browse, star, and export Krikkit Lab projects from Studio.
+- [Billing](https://doc.krikkit.space/billing): User plans, usage, upgrades, and checkout in Krikkit.
+- [Overview](https://doc.krikkit.space/lab-overview): Complete tour of the Krikkit AI studio — chat, preview, inspect, code, database, and publish.
+- [AI Chat](https://doc.krikkit.space/chat): Streaming chat, photograph lookup, file writes, titles, and agent tools in Krikkit Lab.
+- [Workspace](https://doc.krikkit.space/workspace): Preview, code editor, inspect mode, design inspector, terminal, and database panel in Krikkit.
+- [Integrations](https://doc.krikkit.space/lab-integrations): Supabase, GitHub, stock photographs, and how the agent requests integrations in Krikkit.
+- [Publish & Export](https://doc.krikkit.space/publish-export): Subdomain and custom-domain publish, share links, ZIP export, and thumbnails in Krikkit.
+- [Overview](https://doc.krikkit.space/dashboard-overview): Configure OpenAI, Anthropic, DeepSeek, Grok, Zhipu, Google, Supabase, GitHub, and stock images.
+- [Users](https://doc.krikkit.space/users): Create and manage Krikkit user accounts.
+- [Roles & Permissions](https://doc.krikkit.space/roles): Configure access roles and permissions for Krikkit staff and users.
+- [Packs](https://doc.krikkit.space/packs): Create and manage Krikkit subscription plans and limits.
+- [Credits](https://doc.krikkit.space/credits): View and adjust Krikkit credit balances.
+- [Subscriptions](https://doc.krikkit.space/subscriptions): Monitor Krikkit customer subscriptions.
+- [Invoices](https://doc.krikkit.space/invoices): View orders and send invoice emails in Krikkit admin.
+- [Payment Gateways](https://doc.krikkit.space/payment-gateways): Configure Stripe and PayPal for Krikkit billing.
+- [Blog](https://doc.krikkit.space/blog): Publish blog posts on your Krikkit marketing site.
+- [Pages](https://doc.krikkit.space/pages): Manage static CMS pages in Krikkit.
+- [Contact Submissions](https://doc.krikkit.space/contacts): Inbox for the public contact form in Krikkit.
+- [Newsletter](https://doc.krikkit.space/newsletter): Manage newsletter subscribers from the Krikkit dashboard.
+- [Landing Page](https://doc.krikkit.space/landing): Edit the Krikkit marketing landing — hero mesh, nav, bento, builder landing, footer.
+- [Lab Administration](https://doc.krikkit.space/lab-admin): Monitor Lab projects, usage, and failed AI turns from the dashboard.
+- [Sessions](https://doc.krikkit.space/sessions): Review active and historical user sessions.
+- [Languages](https://doc.krikkit.space/languages): Add locales and edit translation files in Krikkit.
+- [SEO](https://doc.krikkit.space/seo): Default meta tags, Open Graph image, and search verification in Krikkit.
+- [General & Branding](https://doc.krikkit.space/general-settings): Site name, Application URL, logos, theme defaults, and currency locale.
+- [Themes](https://doc.krikkit.space/themes): Admin UI theme, accent, density, sidebar, and radius in Krikkit.
+- [Email (SMTP)](https://doc.krikkit.space/mail): Configure outbound email for Krikkit via environment variables.
+- [Publish Settings](https://doc.krikkit.space/publish-settings): Enable publishing and show DNS guidance to operators.
+- [Lab Console](https://doc.krikkit.space/lab-console): Default AI model, user model selection, and notification sounds.
+- [Privacy & Legal](https://doc.krikkit.space/privacy-legal): Publish privacy, terms, refund, and license pages in Krikkit.
+- [API Integration](https://doc.krikkit.space/integration): Configure AI providers, GitHub, Supabase, and Unsplash / Pixabay keys from the dashboard.
+- [GitHub](https://doc.krikkit.space/github): Configure GitHub OAuth for Lab import, push, and pull workflows.
+- [Supabase](https://doc.krikkit.space/supabase): Configure Supabase OAuth for Lab datastore workflows.
+- [Stock Images](https://doc.krikkit.space/stock-images): Unsplash Application ID, Access Key, and Secret — plus Pixabay — for Lab photograph lookup.
+- [Build Assets](https://doc.krikkit.space/build-assets): Compile Krikkit frontend assets with npm and Vite.
+- [Environment](https://doc.krikkit.space/environment): Key .env variables for Krikkit after installation.
+- [Updating](https://doc.krikkit.space/updating): Upgrade Krikkit safely after a new CodeCanyon release.
+- [Common Issues](https://doc.krikkit.space/common-issues): Installation, permissions, and general Krikkit troubleshooting.
+- [AI & Lab](https://doc.krikkit.space/troubleshooting-ai): Fix provider errors, blank previews, Untitled titles, and missing photographs.
+- [Publish](https://doc.krikkit.space/troubleshooting-publish): DNS, custom domains, and artifact upload troubleshooting.
+
+## Markdown Export
+
+Append `.md` to any docs page URL to fetch raw markdown, e.g. `https://doc.krikkit.space/installation.md`.

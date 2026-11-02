@@ -1,0 +1,5 @@
+const e=require("./lab-keys-BeJxXanB.cjs");let i=require("node:path"),d=require("node:url"),s=require("node:fs/promises");var _=[`../${e.LAB_SW_FILENAME}`,`../${e.LEGACY_SW_FILENAME}`,`../../static/${e.LAB_SW_FILENAME}`,`../../static/${e.LEGACY_SW_FILENAME}`,`../../dist/${e.LAB_SW_FILENAME}`,`../../dist/${e.LEGACY_SW_FILENAME}`],a=null;async function E(r){const t=(0,i.dirname)((0,d.fileURLToPath)(r)),c=[];for(const u of _){const n=(0,i.resolve)(t,u);try{return await(0,s.readFile)(n),n}catch(o){const l=o instanceof Error?o.message:String(o);c.push(`  ${n}: ${l}`)}}throw new Error(`[lab-runtime] could not locate service worker source. Tried:
+${c.join(`
+`)}`)}async function f(r){return a||(a=(async()=>{const t=await E(r);return(0,s.readFile)(t,"utf8")})()),a}function A(){return{"Content-Type":"application/javascript; charset=utf-8","Service-Worker-Allowed":"/","Cache-Control":"no-cache"}}Object.defineProperty(exports,"readServiceWorkerSource",{enumerable:!0,get:function(){return f}});Object.defineProperty(exports,"swResponseHeaders",{enumerable:!0,get:function(){return A}});
+
+//# sourceMappingURL=headers-X9nJSIZQ.cjs.map

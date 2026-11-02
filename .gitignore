@@ -1,0 +1,14 @@
+# Local/runtime artifacts — never commit
+.env
+.env.*
+!.env.example
+vendor/
+node_modules/
+public/build/
+**/storage/framework/
+**/storage/logs/
+**/storage/app/private/
+**/storage/app/tmp/
+**/storage/app/public/avatars/
+.DS_Store
+*.log

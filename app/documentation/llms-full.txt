@@ -1,0 +1,1779 @@
+# Krikkit — Full Documentation
+
+> Krikkit documentation by deep42.
+
+# Introduction
+
+# Welcome to Krikkit
+
+Krikkit is an AI-assisted web project builder SaaS developed by **deep42**. This Laravel-based platform lets you run a product where users generate, preview, edit, and publish web projects through an integrated builder workspace—with billing and admin controls included.
+
+You purchased Krikkit on **CodeCanyon**; this documentation covers installation, configuration, and day-to-day operation of your copy.
+
+## About Krikkit
+
+Krikkit is a complete AI builder SaaS that provides:
+
+- **AI-driven builder workflow** — Chat, edit, and iterate on projects with tool-assisted generation
+- **Workspace and preview** — File APIs, live preview publishing, and exportable build sessions
+- **Modern technology stack** — Laravel, Livewire, Blade, and Tailwind CSS
+- **Production-ready billing** — Stripe and PayPal integration with webhook support
+- **Operational admin** — Roles, permissions, and dashboard analytics for running the platform
+
+## What is Krikkit?
+
+Krikkit is a SaaS platform for AI-assisted web development. It enables:
+
+- **End users** to create projects, chat with the AI builder, edit files in a workspace, and publish previews
+- **Operators** to manage subscriptions, usage limits, and platform settings from the admin dashboard
+- **Secure billing** with Stripe and PayPal, including webhook endpoints for subscription lifecycle events
+- **Build sessions** with progress tracking and zip export for completed work
+- **Role-based access** — Built-in roles and abilities for team and admin access
+
+## Technology Stack
+
+Krikkit is built with modern web technologies:
+
+- **PHP 8.3+** — Required runtime (some dependencies and extensions expect PHP 8.3+)
+- **Laravel 13** — Backend framework for APIs, auth, billing, and jobs
+- **Livewire 4** — Full-stack UI for the builder and dashboard
+- **Blade + Tailwind CSS** — Server-rendered views and styling
+- **MySQL** — Recommended database for production
+- **Node.js 20+ and npm 10+** — Frontend asset builds and workspace tooling
+- **Queue worker** — Database or Redis-backed job processing for builds and async tasks
+- **Stripe & PayPal** — Payment and subscription management
+- **Access roles** — Role and permission management for operators
+
+## Key Features
+
+### AI Builder
+
+- Lab chat with orchestrated tool rounds and file edits
+- Workspace file APIs with size and concurrency limits
+- Optional build verification after AI edits (`npm run build`)
+- Preview publishing with configurable file and size caps
+
+### Starter templates
+
+- Blank React + Vite starter plus featured SaaS, portfolio, ecommerce, and hospitality sites
+- New demos: **Maison Noir**, **Maison Éclat**, **Maison Atelier**, **ArcVault**
+
+### Integrations
+
+- **Supabase** database panel and migrations in the builder
+- **GitHub** import, push, and PR workflows
+- Stock images (Unsplash / Pixabay)
+
+### Projects & Workspace
+
+- Project lifecycle management from creation to export
+- Terminal command execution in the workspace (with timeouts)
+- Build sessions with progress and downloadable zip archives
+- Thumbnail generation for project previews
+
+### Billing & Admin
+
+- Stripe and PayPal billing with webhook handlers
+- Subscription and usage management for SaaS operators
+- Admin dashboard with operational analytics
+- Role-based access for admins and support staff
+
+## About deep42
+
+**deep42** is a software development company specializing in high-quality Laravel and Livewire applications. Krikkit is one of our premium CodeCanyon products for entrepreneurs and developers who want to launch their own AI-powered website builder SaaS.
+
+## Getting Started
+
+After downloading from CodeCanyon, start with the [Installation](/installation) guide. It walks through the web installer, server requirements (including PHP 8.3+), and post-install configuration for AI providers, payments, queues, and webhooks.
+
+This platform is designed to help you launch and operate a professional AI builder SaaS with minimal custom infrastructure.
+
+## Support
+
+Need help? Open a request on the **[Deep42 Support Hub](https://hub.deep42.co/)**.
+
+---
+
+# Installation
+
+<Callout>
+
+**Welcome!** This guide helps you install **Krikkit** after purchasing on **CodeCanyon**. The recommended path is the built-in web installer at `/install`.
+
+</Callout>
+
+## Server requirements
+
+Before you begin, make sure your server meets these requirements:
+
+| Requirement | Minimum |
+|-------------|---------|
+| **PHP** | **8.3+** (required) |
+| **Database** | MySQL 8+ or MariaDB 10.6+ (recommended for production) |
+| **Composer** | 2.x |
+| **Node.js** | 20+ |
+| **npm** | 10+ |
+| **Web server** | Apache or Nginx with URL rewriting |
+| **Queue** | Database or Redis driver (required for builds and background jobs) |
+
+### Required PHP extensions
+
+- `bcmath`, `ctype`, `curl`, `fileinfo`, `json`, `mbstring`, `openssl`, `pdo`, `tokenizer`, `xml`
+
+### Recommended PHP extensions
+
+- `gd`, `zip`
+
+### Writable directories
+
+- `storage/`
+- `bootstrap/cache/`
+
+<Steps>
+
+### Step 1: Download from CodeCanyon
+
+1. Log in to your [CodeCanyon](https://codecanyon.net) account.
+2. Open **Downloads** and download the latest **Krikkit** package.
+3. Extract the archive on your computer.
+4. Upload the project files to your server (document root or subdomain folder).
+
+The CodeCanyon zip should include a prebuilt `public/build` directory. If you rebuild assets yourself before packaging or deploying, run `npm install && npm run build` so the site does not fall back to the Tailwind CDN.
+
+### Step 2: Set permissions
+
+On Linux hosting, ensure Laravel can write logs, cache, and uploads:
+
+```bash
+chmod -R 755 storage bootstrap/cache
+```
+
+If your host requires it, set the web server user as owner of `storage` and `bootstrap/cache`.
+
+### Step 3: Open the installer
+
+Point your browser to your site. If the app is not yet installed, you are redirected to the installer:
+
+```
+https://yourdomain.com/install
+```
+
+### Step 4: Follow the installation wizard
+
+The Hitchhiker wizard runs these steps:
+
+1. **Requirements** — PHP **8.3+**, extensions, memory limit
+2. **Permissions** — Writable `storage` and `bootstrap/cache`
+3. **License** — CodeCanyon purchase code (**optional**; leave empty to continue, then bind later under **Settings → License**)
+4. **Environment** — Database credentials and `APP_URL`
+5. **Migrations** — Creates all tables
+6. **Create Admin** — You choose the owner email, name, and password (Owner role + Agency pack)
+
+When the installer finishes, sign in at `/login` with the **admin account you created** in the last step. There is no fixed default email/password from the web installer.
+
+</Steps>
+
+## Manual installation (advanced)
+
+Use this path only if the web installer is unavailable (CLI-only server, custom deploy pipeline, etc.).
+
+### 1. Install PHP dependencies
+
+```bash
+composer install --no-dev --optimize-autoloader
+```
+
+Use PHP **8.3+** for all `php` and `composer` commands.
+
+### 2. Environment file
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Edit `.env` with your database, `APP_URL`, and mail settings:
+
+```env
+APP_URL=https://yourdomain.com
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+
+QUEUE_CONNECTION=database
+```
+
+### 3. Database
+
+```bash
+php artisan migrate --force
+php artisan db:seed --force
+```
+
+Manual seed creates (or updates) an owner account at `admin@deep42.co` with password `12345678` **only when that user is newly created or has no password yet**. Change it immediately on any public host. Prefer the web installer’s **Create Admin** step so you set your own credentials from the start.
+
+### 4. Frontend assets
+
+```bash
+npm install
+npm run build
+```
+
+### 5. Storage link
+
+```bash
+php artisan storage:link
+```
+
+### 6. Optimize for production
+
+```bash
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+## Post-installation
+
+After the installer or manual setup:
+
+### Platform essentials
+
+- **Admin account** — Created during the installer (or via seeder on manual installs)
+- **License** — Optional. If you skipped it during install, open **Settings → License** and bind your purchase code when ready
+- **Site settings** — App name, branding, and general options in the admin panel
+- **SMTP** — Configure mail for registration, billing, and notifications
+
+### AI builder (Lab)
+
+Lab needs at least one provider API key. Set keys in `.env` (see [Environment](/environment)) or under the Lab / AI settings in the dashboard:
+
+```env
+AI_DEFAULT_MODEL=claude-sonnet-4-5
+ANTHROPIC_API_KEY=
+OPENAI_API_KEY=
+```
+
+Other supported providers (optional): `XAI_API_KEY`, `DEEPSEEK_API_KEY`, `GROQ_API_KEY`, `MISTRAL_API_KEY`, `ZHIPUAI_API_KEY`, `GOOGLE_AI_API_KEY`.
+
+Krikkit’s Lab preview runtime ships in the package. Without a provider key, Lab chat cannot call a model — configure a key before testing generation.
+
+### Billing
+
+- Configure **Stripe** and/or **PayPal** in **Settings → Payment gateways** (or the finance / payment screens in the dashboard)
+- Register webhooks with your public URL:
+  - Stripe: `https://yourdomain.com/webhooks/stripe`
+  - PayPal: `https://yourdomain.com/webhooks/paypal`
+
+### Background processes (production)
+
+Krikkit relies on queues and the scheduler for builds, billing, and maintenance.
+
+**Queue worker** (Supervisor example):
+
+```ini
+[program:krikkit-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+user=www-data
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/path/to/storage/logs/worker.log
+```
+
+**Cron** (Laravel scheduler):
+
+```cron
+* * * * * cd /path/to/your-app && php artisan schedule:run >> /dev/null 2>&1
+```
+
+### Local development
+
+For local work on your machine:
+
+```bash
+composer run dev
+```
+
+This runs the Laravel server, queue listener, logs, and Vite together.
+
+## Production checklist
+
+- `APP_ENV=production`
+- `APP_DEBUG=false` (never enable on public hosts)
+- `APP_URL` set to your HTTPS domain
+- PHP **8.3+** on the server and CLI
+- Prebuilt or freshly built `public/build` assets deployed with the app
+- Queue worker supervised (Supervisor or systemd)
+- Cron configured for `schedule:run`
+- Stripe/PayPal webhooks verified at `/webhooks/stripe` and `/webhooks/paypal`
+- Secure session cookies behind HTTPS (`SESSION_SECURE_COOKIE=true` when appropriate)
+
+## Troubleshooting
+
+If installation fails:
+
+1. Confirm **PHP 8.3+** is active for both web and CLI (`php -v`)
+2. Re-check required extensions on the installer requirements screen
+3. Verify database host, name, user, and password
+4. Ensure `storage` and `bootstrap/cache` are writable
+5. Review `storage/logs/laravel.log`
+6. Review installer-related logs if present under `storage/logs/`
+
+For product support, open a request on the **[Deep42 Support Hub](https://hub.deep42.co/)**. Include your purchase code, PHP version, and relevant log excerpts.
+
+## After install — how you sign in
+
+| Path | Credentials |
+|------|-------------|
+| **Web installer** | Email + password you entered on **Create Admin** |
+| **Manual `db:seed`** | Owner email `admin@deep42.co` with password `12345678` (change immediately on any public host) |
+
+The web installer does **not** create demo buyers or fixed example.com accounts. Sign in with the owner credentials you set (or the seed owner above for manual installs only).
+
+## Post-install checklist
+
+1. Run a queue worker: `php artisan queue:work --tries=3` (Supervisor recommended)
+2. Cron every minute: `* * * * * cd /path/to/krikkit && php artisan schedule:run >> /dev/null 2>&1`
+3. Add at least one AI provider key (`ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / …)
+4. Set `APP_URL` to your public HTTPS URL
+5. Optional: bind license under **Settings → License**; configure GitHub, Supabase, Unsplash/Pixabay as needed
+
+---
+
+# Overview
+
+# Studio Overview
+
+After login, **`/`** becomes **Studio** — the user-facing home. Guests still see the public marketing landing page.
+
+**URLs**
+
+| Page | URL |
+|------|-----|
+| Studio home | `/` |
+| All projects | `/projects` |
+| Starred | `/starred` |
+| Export ZIP | `/projects/{project}/export` |
+| Open in Lab | `/lab/{project}` |
+
+## What users see
+
+- Recent and starred Lab projects
+- Quick actions to resume work or start a new brief in the Lab
+- Pack/credit status surfaced in the chrome when billing is enabled
+
+## Operator notes
+
+- Registration can be toggled under **Dashboard → Settings → General**
+- Default packs and credit grants are configured under **Dashboard → Packs**
+- Published marketing copy lives under **Dashboard → Landing**
+
+## Related
+
+- [Projects](/docs/projects)
+- [Lab Overview](/docs/lab-overview)
+- [Billing](/docs/billing)
+
+---
+
+---
+
+# Projects
+
+# Projects
+
+**URLs:** `/projects`, `/starred`, `/projects/{project}/export`
+
+Each **project** is a Lab workspace backed by a database record and on-disk files under `storage/app/lab/projects/{uuid}/`.
+
+## Create a project
+
+1. Open Studio (`/`) or go to `/lab`
+2. Enter a brief describing the site you want
+3. Krikkit creates the project, seeds the site kit, and opens the Lab IDE
+
+## Project title
+
+The title in the Lab top bar is a **product wordmark**, not a restatement of the prompt.
+
+- A brief such as “make a 3 page website for a beauty salon” is **not** a name. The titler invents a short brand (Aurelia, Maison Luxe, Lumière).
+- If the user already named the product, that name is kept.
+- Greetings and small talk stay **Untitled**.
+- Untitled is a placeholder. When a real product brief arrives, Lab retitles the project.
+
+Operators do not configure this — it runs on the first Lab chat turn.
+
+## Project list
+
+| Action | Where |
+|--------|-------|
+| Browse all | `/projects` |
+| Star / unstar | Project card menu in Studio |
+| Resume in Lab | `/lab/{project}` |
+| Export ZIP | `/projects/{project}/export` (requires entitlement) |
+
+## Limits
+
+Project counts and Lab credits depend on the user's **pack**. Operators configure limits under **Dashboard → Packs**.
+
+---
+
+# Billing
+
+# Billing
+
+**URL:** `/dashboard/billing`
+
+## What users see
+
+- Current plan and renewal
+- Credit balance / usage
+- Available plans (from Admin → Packs)
+- Stripe or PayPal checkout, customer portal where configured
+- Spending history and CSV export (when enabled)
+
+## Upgrade gates
+
+Insufficient credits, storage, private projects, or publish domain limits open upgrade drawers that deep-link here.
+
+## Operator side
+
+Configure [Packs](/docs/packs), [Payment Gateways](/docs/payment-gateways), and [Subscriptions](/docs/subscriptions) / [Invoices](/docs/invoices).
+
+---
+
+---
+
+# Overview
+
+# Lab Overview
+
+The **Lab** is Krikkit’s full AI studio. Users describe a product in chat; the agent edits a real workspace; they preview, inspect, refine, connect backends, and publish.
+
+**URLs**
+
+- `/lab` — create / resume
+- `/lab/{projectUuid}` — open a project (cross-origin isolated for WASM preview)
+- `/lab` — create flow
+- `/lab` — template gallery
+- `/projects` — project manager
+
+## Studio layout
+
+| Region | What it does |
+|--------|----------------|
+| **Left — Chat** | Prompt composer, streaming replies, thinking blocks, tool cards, attachments, clarifications, project tasks |
+| **Centre / right — Preview chrome** | Preview · Code · Database tabs, address bar, viewport, reload, open external |
+| **Top bar** | Home, project title, view toolbar, share, publish, sync/PR (GitHub), inspect toggle, settings |
+| **Bottom — Terminal** (optional) | Workspace shell output, auto-fix status |
+| **Inspector** (when inspecting) | Typography, color, layout, border, shadow, appearance |
+
+## End-to-end flow
+
+1. Create a blank project or start from a [Studio](/docs/studio-overview)
+2. Send a plain-English goal in [AI Chat](/docs/chat)
+3. Watch tools run (search, read, write, InspectSite, Supabase, todos…)
+4. Use [Preview](/docs/workspace#preview) — in-browser WASM and/or server Vite
+5. Toggle **Inspect** → click UI → adjust styles or ask for design edits
+6. Connect [Supabase / GitHub](/docs/lab-integrations) when needed
+7. [Publish](/docs/publish-export-export), share, or export a ZIP
+
+## Credits and plans
+
+AI usage consumes **credits**. Insufficient balance opens the upgrade drawer. Operators configure models and limits under Admin → Integrations and Packs.
+
+## Related pages
+
+- [Workspace (preview, code, inspect, terminal)](/docs/workspace)
+- [AI Chat & agent tools](/docs/chat)
+- [Templates](/docs/templates)
+- [Integrations](/docs/lab-integrations)
+- [Publish & Export](/docs/publish-export-export)
+- [Billing](/docs/billing)
+
+---
+
+---
+
+# AI Chat
+
+# AI Chat
+
+Chat is the primary way users build. The agent streams replies, runs tools, writes files, and looks up photographs before placing them in the layout.
+
+## Composer
+
+- Multi-line prompt input
+- **Attachments** — images for vision-capable models
+- **Model selector** — when Admin → Lab Console allows model selection
+- Send starts (or continues) an agent session
+
+## Streaming UI
+
+| Element | Meaning |
+|---------|---------|
+| **Thinking** | Collapsible thought block |
+| **Tool cards** | Active / complete labels for each tool |
+| **Photograph card** | Image icon. **Looking up photographs** / **Looked up N photographs**. The scene query is not shown in the transcript. |
+| **File write cards** | Complete files applied to the workspace |
+| **Credits** | Balance; insufficient → upgrade drawer |
+
+**Stream:** `GET …/chat/stream/{messageId}` (SSE).  
+**Cancel:** session cancel endpoint.
+
+## Agent tools
+
+Schemas are defined in `LabToolCatalog`. Names used at runtime include:
+
+| Tool | What it does |
+|------|----------------|
+| `list_dir` / `file_search` / `grep` / `read_file` | Inspect the working VFS |
+| `write_file` | Atomic full-file overwrite. Body must be complete and balanced. There is **no** per-turn file-count cap. Always overwrite `src/App.jsx` in the same turn as the first sections so Preview is not the seed canvas. |
+| `lookup_visuals` | Fetch licensed stock photographs. Call in its own round **before** `write_file` when a page needs real photos. Use each returned `src`. Never invent Unsplash/Pixabay IDs. |
+| `survey_datastore` | Inspect Supabase connection and schema before inventing tables |
+
+If the first turn only writes CSS and section files, Lab continues automatically until `src/App.jsx` imports those sections.
+
+## Photographs
+
+Operators configure Unsplash / Pixabay under [Stock Images](/docs/stock-images). Search uses the Unsplash **Access Key**. Empty lookup results → CSS or illustration, not fake photo URLs.
+
+## Project titles
+
+The first product brief mints a short invented wordmark (see [Projects](/docs/projects)). The chat prompt is never used as the title.
+
+## Limits (operators)
+
+| Env / config | Role |
+|--------------|------|
+| Pack credit grants | Metering |
+| Model max output | Tokens per Lab turn (executor uses the model ceiling) |
+
+---
+
+# Workspace
+
+# Workspace
+
+Inside `/lab/{projectUuid}`, the **workspace** is everything beside chat: preview, code, database, terminal, and visual inspect tools.
+
+The view toolbar switches:
+
+| Tab | Purpose |
+|-----|---------|
+| **Preview** | Live app iframe + address bar + viewport |
+| **Code** | File tree + CodeMirror editor |
+| **Database** | Supabase schema, SQL, rows (when connected) |
+
+---
+
+## Preview
+
+### In-browser preview (default)
+
+Krikkit compiles the project in the browser with an **DeepThought browser runtime** runtime (virtual filesystem, npm resolution, Vite/Next shims). Users iterate without Docker. The page is served under cross-origin isolation so SharedArrayBuffer / WASM work.
+
+### Server-side Vite preview (`/preview-dev`)
+
+For heavier apps, Krikkit can start a **server Vite** process per project and proxy it at:
+
+```
+/preview-dev/{projectUuid}/
+```
+
+| Control | API |
+|---------|-----|
+| Start | `POST …/dev-preview/start` |
+| Stop | `POST …/dev-preview/stop` |
+| Status | `GET …/dev-preview/status` |
+| Logs | `GET …/dev-preview/logs` |
+
+**Requirements:** Node **20.19+**, npm **10+**, `proc_open` enabled.  
+**Config:** `KRIKKIT_DEV_PREVIEW_*`, port range default `15000–15999` (`config/krikkit.php` → `dev_preview`).
+
+### Address bar & navigation
+
+- Shows the current preview path (normalized)
+- Enter a path and press Enter to navigate inside the iframe
+- **Back / Forward** — iframe history
+- **Reload** — hard refresh (`builder-reload-preview`)
+- **Open external** — shareable preview URL in a new tab
+- Fullscreen and zoom/framed device chrome on non-desktop viewports
+
+### Viewport modes
+
+Cycle **desktop → tablet → phone** from the responsive toolbar. Non-desktop modes wrap the iframe in device framing.
+
+### Runtime sessions
+
+Signed sandbox tokens: `POST …/runtime/sessions`, token refresh, and remote fallback when configured (`BUILDER_REMOTE_RUNTIME_*`, DeepThought keys).
+
+---
+
+## Inspect mode & visual design edits
+
+1. Switch to **Preview**
+2. Enable **Inspect** in the top bar
+3. Click an element in the iframe
+4. The **Inspector** opens (dock left or right); optional floating design chat appears
+5. Tweak CSS live, or send a design prompt (+ optional screenshot) to the AI
+
+**Screenshot upload:** `POST …/design-edit/screenshot`  
+**Prompt chips (examples):** `/modern`, `/contrast`, `/spacious`, `/simplify`, `/readable`, `/shadows`, `/pop`, `/hierarchy`
+
+Design edits package the selected element path, CSS delta, and screenshot for the agent session.
+
+---
+
+## Inspector (what you can edit)
+
+| Section | Properties |
+|---------|------------|
+| **Typography** | font family, size, weight, style, line height, letter spacing, align, transform, decoration |
+| **Color** | text `color` |
+| **Background** | `backgroundColor` |
+| **Layout** | display (block/flex/grid/…), margin, padding (per side) |
+| **Border** | color, style, width |
+| **Shadow** | presets XS→2XL or custom X/Y/blur/spread/color/inset → `boxShadow` |
+| **Appearance** | opacity, border radius (including per-corner) |
+
+Pending styles preview live; **Apply** sends them into the AI edit pipeline.
+
+---
+
+## Code editor & file tree
+
+| Feature | Detail |
+|---------|--------|
+| Tree | Hierarchical file browser |
+| Search | Indexed path/content search |
+| Editor | CodeMirror (light/dark themes); Cmd/Ctrl+S save |
+| Tabs | Multi-file; unsaved close confirm; AI write conflict reload |
+| Images | Inline preview for image assets |
+| Bridge | Chat “open file” cards jump to the editor |
+
+**API:** list/read/write files, file index, snapshot, sync, artifact upload.  
+**Limits:** `KRIKKIT_WORKSPACE_MAX_FILE_SIZE`, `KRIKKIT_WORKSPACE_MAX_TOTAL_BYTES`, `KRIKKIT_ALLOW_MANIFEST_EDITS` (blocks `package.json` / lockfile edits by default).
+
+---
+
+## Terminal
+
+Bottom **Terminal** panel:
+
+- Run sandbox commands (`npm install`, `npm run build`, …) via `POST …/workspace/terminal/execute`
+- Timeout: `KRIKKIT_WORKSPACE_TERMINAL_TIMEOUT` (default 180s)
+- Audience: `BUILDER_TERMINAL_AUDIENCE=owner|technical`
+- Multi-session tabs, interrupt, minimize
+- During **auto-fix**, raw logs can stay collapsed until expanded
+- Dev-preview logs can poll into the panel
+
+---
+
+## Database panel
+
+When Supabase is connected (see [Integrations](/docs/lab-integrations)):
+
+- **Table** view — browse rows
+- **SQL** — run queries
+- Schema refresh, migrations, chat **Allow / Skip** migration cards
+
+---
+
+## Builds, auto-fix, thumbnails
+
+- Build sessions: start / status / cancel under `…/builds`
+- After AI edits, the client can run build + **auto-fix** loops (background-fix stream)
+- Thumbnails: capture from preview → `POST …/workspace/thumbnail` (`KRIKKIT_THUMBNAILS_*`)
+
+## Security notes
+
+- Manifest protection unless `KRIKKIT_ALLOW_MANIFEST_EDITS=true`
+- Concurrent builds capped per user
+- Prefer isolated workers for multi-tenant production
+
+---
+
+---
+
+# Integrations
+
+# Integrations
+
+Configure platform keys under **Dashboard → API Integration**. Users connect accounts from the Lab Settings sheet or the Database / GitHub panels.
+
+## Supabase
+
+| Action | Where |
+|--------|--------|
+| OAuth connect | Integrations panel / Connect modal |
+| Manual keys | Local or self-hosted projects |
+| Disconnect | Same panel |
+| Database tab | Schema, SQL, table rows |
+| Migrations | Agent proposes SQL → user **Allow** or **Skip** |
+| Tool | `survey_datastore` |
+
+**Env:** `SUPABASE_OAUTH_*`.  
+**Callback:** `{APP_URL}/lab/oauth/supabase/return`.
+
+If Supabase is not connected and the user asks for auth or tables, the agent requests a connection instead of inventing credentials.
+
+## GitHub
+
+| Action | Where |
+|--------|--------|
+| Authorize account | Integrations / Import from GitHub |
+| Import repo | Creates a new Krikkit project from a branch |
+| Link project | Connect an existing project to a repo |
+| Push / sync | Top bar Sync |
+| Open PR | Top bar Open PR / View PR |
+| Disconnect | Project GitHub panel |
+
+**Env:** `GITHUB_OAUTH_*`.  
+**Callback:** `{APP_URL}/lab/vcs/github/return`.
+
+Requires a real queue worker (`QUEUE_CONNECTION=database` or Redis — **not** `sync`).
+
+## Stock photographs
+
+Operators enable Unsplash and/or Pixabay under **Dashboard → API Integration**. Lab uses them server-side via `lookup_visuals`.
+
+Unsplash has three fields (Application ID, Access Key, Secret). Search uses the Access Key only — see [Stock Images](/docs/stock-images).
+
+```env
+UNSPLASH_APPLICATION_ID=
+UNSPLASH_ACCESS_KEY=
+UNSPLASH_SECRET_KEY=
+PIXABAY_API_KEY=
+```
+
+## Web search & fetch
+
+Used by chat tools:
+
+- `SearchWeb` — DuckDuckGo default or Brave with API key
+- `FetchFromWeb` — page text for research
+
+---
+
+# Publish & Export
+
+# Publish & Export
+
+## Publish
+
+Open **Publish** from the builder top bar (`PublishProjectModal`).
+
+| Mode | Behavior |
+|------|----------|
+| **Subdomain** | Deploy to `{sub}.{publish_root}` — root from Application URL / `KRIKKIT_PUBLISH_SUBDOMAIN_ROOT` |
+| **Custom domain** | Plan-gated; show CNAME instructions; verify DNS; attach host |
+
+**API:** `GET …/workspace/publish/options`, `POST …/workspace/publish`  
+Published traffic is served via host routing (`routes/published.php`).
+
+Plan limits (subdomains / custom domains) come from Packs.
+
+## Share links
+
+Each project can expose an unauthenticated preview:
+
+```
+/share/{shareCode}/…
+```
+
+Share menu: copy link, share to X / LinkedIn, copy for Instagram. Also copy the published URL when live.
+
+## Export ZIP
+
+Download a successful build:
+
+```
+GET /projects/{projectUuid}/builds/{buildUuid}/export
+```
+
+Artifacts under `storage/app/exports` (retention: `KRIKKIT_EXPORT_RETENTION_DAYS`).
+
+## Thumbnails
+
+Preview capture uploads to `POST …/workspace/thumbnail` for project cards (`KRIKKIT_THUMBNAILS_*`).
+
+## Operator checklist
+
+- HTTPS `APP_URL` / Application URL correct before publish
+- Queue workers running for builds and publish jobs
+- DNS aligned for custom domains and subdomain root
+
+---
+
+---
+
+# Overview
+
+# AI & Integrations Hub
+
+**URL:** `/dashboard/settings/integration`
+
+Overview table lists each provider, default model, and whether keys are configured. Open a provider to edit.
+
+## AI providers
+
+| Path | Provider |
+|------|----------|
+| `…/openai` | OpenAI |
+| `…/anthropic` | Anthropic |
+| `…/deepseek` | DeepSeek |
+| `…/grok` | Grok (xAI) |
+| `…/zhipu` | ZhipuAI |
+| `…/google` | Google AI Studio |
+
+Per provider you typically set: API key (encrypted), model, temperature, max output tokens, timeout, summarization tokens, plus a cost estimator where available.
+
+**Env counterparts:** `OPENAI_*`, `ANTHROPIC_*`, `DEEPSEEK_*`, `GROK_*`, `ZHIPU_*`, `GOOGLE_AI_*`, `KRIKKIT_AI_DEFAULT`.
+
+Admin values override `.env` when saved.
+
+## Platform OAuth
+
+| Path | Purpose |
+|------|---------|
+| `…/supabase` | Supabase OAuth client id/secret + callback help |
+| `…/github` | GitHub OAuth client id/secret + callback help |
+
+## Stock images
+
+See [Stock Images](/docs/stock-images).
+
+## Builder default model
+
+After keys are saved, pick the platform default under [Lab Console](/docs/builder-settings).
+
+---
+
+---
+
+# Users
+
+# Users
+
+**URL:** `/dashboard/users`
+
+- Search and filter users
+- Create: name, email, password, role
+- Edit: update profile, role; delete (not yourself)
+- Credits are adjusted under [Credits](/docs/credits)
+
+---
+
+---
+
+# Roles & Permissions
+
+# Roles & Permissions
+
+Krikkit uses [Krikkit ability registry](https://github.com/spatie/laravel-permission) for fine-grained access control.
+
+**Location:** Dashboard → **Admin** → **Roles**  
+**URL:** `/dashboard/roles`  
+**Permission:** `roles.browse`
+
+## Default admin role
+
+The seeded **admin** role receives all permissions and cannot be deleted. System role names are locked on edit.
+
+## Create a role
+
+1. **Roles** → **Create role**
+2. Enter a **role name**
+3. Enable permission groups as needed:
+   - Dashboard, Users, Roles, Builders, Credits, Packs
+   - Pages, Blogs, Subscriptions, Payment gateways, Languages
+   - AI providers
+4. Save
+
+## Permission groups
+
+| Group | Typical use |
+|-------|-------------|
+| Dashboard | Access admin overview |
+| Users | List, create, update, delete users |
+| Roles | Manage roles and permission assignments |
+| Builders | View and activate Lab console |
+| Credits | View balances and grant/debit credits |
+| Packs | Manage subscription plans |
+| Pages / Blogs | CMS content |
+| Subscriptions | View subscription records |
+| Payment gateways | View and update Stripe/PayPal |
+| Languages | Manage locales and translation files |
+| AI providers | Configure API keys and models |
+
+## Edit or delete
+
+- Edit a role to add or remove permissions; existing users with that role pick up changes on next request.
+- Roles assigned to users cannot be deleted until users are reassigned.
+- The **admin** system role cannot be removed.
+
+---
+
+---
+
+# Packs
+
+# Packs
+
+**URL:** `/dashboard/packs` · create/edit plan pages
+
+## Plan fields
+
+- Name, slug, description, price, currency, interval, trial days
+- Active / visible / recommended flags
+- Limits: projects, monthly credits, storage MB, subdomain count, custom domains
+- Flags: unlimited AI / storage / projects, private projects, user API keys
+- Optional AI provider slug and builder runtime assignment
+- Feature bullet list for marketing cards
+
+Seeded examples: Free, Pro, Business, Enterprise (+ yearly variants). User billing UI reads these plans.
+
+---
+
+---
+
+# Credits
+
+# Credits
+
+**URL:** `/dashboard/credits`
+
+- List balances and lifetime credited/debited
+- Edit a user: grant or debit amount with description
+- Transaction history per account
+- Chat metering uses `KRIKKIT_CREDITS_*` and package monthly allotments
+
+---
+
+---
+
+# Subscriptions
+
+# Subscriptions
+
+**URL:** `/dashboard/subscriptions`
+
+- Status, period, auto-renew
+- Gateway / provider IDs, plan, linked order
+- Scheduler job `packs:refresh-subscriptions` keeps periods in sync
+
+---
+
+---
+
+# Invoices
+
+# Invoices
+
+**URL:** `/dashboard/invoices` · detail `…/invoices/{id}`
+
+- Filter and search orders
+- View user, plan, gateway, referral, subscription, and meta
+- Send / resend invoice or payment reminder emails
+
+Tied to Stripe/PayPal checkouts and [Subscriptions](/docs/subscriptions).
+
+---
+
+---
+
+# Payment Gateways
+
+# Payment Gateways
+
+**URL:** `/dashboard/payment_gateways`
+
+| Gateway | Keys |
+|---------|------|
+| Stripe | Secret, publishable, webhook secret |
+| PayPal | Client id/secret, sandbox/live |
+
+Activate the gateways you use. Webhooks: Stripe `STRIPE_WEBHOOK_SECRET`, PayPal `PAYPAL_WEBHOOK_ID`.
+
+---
+
+---
+
+# Blog
+
+# Blogs
+
+Run a simple blog on your public site for updates, tutorials, and product news.
+
+**Location:** Dashboard → **Admin** → **Blogs**  
+**URL:** `/dashboard/blogs`  
+**Permission:** `blogs.view_any`
+
+## Create a post
+
+1. **Blogs** → **Create**
+2. Add **title**, **slug**, **excerpt**, and **body**
+3. Upload a **featured image** if the form provides it
+4. Set **status** to Draft or Published
+5. Save
+
+## Edit posts
+
+Update content from the list → **Edit**. Use drafts for scheduled or in-progress articles.
+
+## Public display
+
+Published posts appear on your blog index route (configured by your theme/frontend). SEO defaults can be supplemented in [SEO Settings](/docs/seo).
+
+---
+
+---
+
+# Pages
+
+# Pages
+
+Create legal pages, landing content, or any static page served by your marketing site.
+
+**Location:** Dashboard → **Admin** → **Pages**  
+**URL:** `/dashboard/pages`  
+**Permission:** `pages.view_any`
+
+## Create a page
+
+1. **Pages** → **Create**
+2. Set **title**, **slug**, and **content** (rich text)
+3. Choose **status**: Draft or Published
+4. Configure SEO fields if shown on the form
+5. Save
+
+Published pages are available at their public URL (for example `/about` depending on routing).
+
+## Edit or delete
+
+Use the list actions to edit content or remove obsolete pages. Prefer **Draft** when reviewing changes before they go live.
+
+## vs Settings pages
+
+| Type | Managed in |
+|------|------------|
+| Privacy, Terms | [Privacy & Terms](/docs/privacy-terms) |
+| Contact page body | [Contact Page](/docs/contact-page) |
+| Custom static pages | **Pages** (this section) |
+
+---
+
+---
+
+# Contact Submissions
+
+# Contact Submissions
+
+**URL:** `/dashboard/contact-submissions`
+
+- Statuses: new, read, replied, archived
+- Open a submission to reply by email
+- Public form fields come from [Contact Page](/docs/contact-page) settings
+
+---
+
+---
+
+# Newsletter
+
+# Newsletter
+
+**URL:** `/dashboard/newsletter`  
+**Ability:** `settings.revise`
+
+- View subscriber list
+- Export subscribers for your ESP
+- Public subscribe endpoint: `POST /newsletter` (rate limited)
+
+---
+
+---
+
+# Landing Page
+
+# Frontend Sections
+
+**URL:** `/dashboard/frontend-sections`
+
+Locale-aware landing CMS (separate from static Pages).
+
+| Section | What you edit |
+|---------|----------------|
+| **Hero** | Badge, **mesh palette** (ocean, sunset, aurora, meadow, rose, slate, indigo, violet, amber, cyan, sky, …), headline, subtitle (`:name`), CTAs, light/dark preview shots |
+| **Navigation** | Login/register/dashboard labels; center links (label/URL, reorder) |
+| **Trusted by** | Active flag, lines, hover CTA, partner logos (up to 5) |
+| **Features** | Title, subtitle, description, marquee CSV |
+| **Bento** | Four cards (title/description/CTA/href) |
+| **Builder landing** | Title, highlight word, suffix, subtitle, announcement, input placeholder |
+| **Builder footer** | Copyright, privacy/terms labels, link groups |
+
+Stored via system settings (`frontend.*` keys). Changes apply after save — mesh colors do not require a frontend rebuild.
+
+---
+
+---
+
+# Lab Administration
+
+# Lab Administration
+
+**Ability:** `projects.browse`
+
+| Page | URL |
+|------|-----|
+| Projects | `/dashboard/lab` |
+| Usage | `/dashboard/lab/usage` |
+| Failed turns | `/dashboard/lab/turns` |
+| Project detail | `/dashboard/lab/{project}` |
+
+Use these screens to audit AI spend, inspect stuck projects, and review failed turns when users report Lab errors.
+
+---
+
+---
+
+# Sessions
+
+# Sessions
+
+**URL:** `/dashboard/sessions`  
+**Ability:** `sessions.browse`
+
+- Browse authenticated sessions across the platform
+- Per-user view: `/dashboard/users/{user}/sessions`
+- Useful for security audits and support
+
+---
+
+---
+
+# Languages
+
+# Languages
+
+Krikkit supports multiple locales. Admins add languages and edit translation strings without deploying code.
+
+**Location:** Dashboard → **Admin** → **Languages**  
+**URL:** `/dashboard/languages`  
+**Permission:** `languages.view_any`
+
+## Add a language
+
+1. **Languages** → **Create**
+2. Enter **code** (for example `en`, `tr`, `de`) and display name
+3. Enable or disable the locale
+4. Save
+
+Set the platform default under [General & Branding](/docs/general-settings) → **Default language**.
+
+## Translate files
+
+1. Open a language → **Translate**
+2. Pick a file group (for example `admin`, `messages`)
+3. Edit key/value pairs in the UI
+4. Save changes
+
+Translations are stored on disk in `lang/{code}/`. Back up this folder before major edits.
+
+## User-facing language switcher
+
+Authenticated users can switch language from the dashboard header when multiple locales are active.
+
+---
+
+---
+
+# SEO
+
+# SEO
+
+Set global SEO defaults for your marketing site and shared layouts.
+
+**Location:** Dashboard → **Admin** → **Settings** → **SEO**  
+**URL:** `/dashboard/settings/seo`
+
+## Default meta
+
+Configure site-wide:
+
+- **Meta title** and **description** templates
+- **Open Graph image** for social sharing
+- Default keywords where supported
+
+Individual **Pages** and **Blogs** can override per-entry fields on their edit forms.
+
+## Search verification
+
+Add verification tags for:
+
+- **Google Search Console**
+- **Bing Webmaster Tools**
+
+Paste the meta tag content or verification string provided by each service.
+
+## Best practices
+
+- Use your [Application URL](/docs/general-settings) with HTTPS before verifying domains
+- Keep OG images at least 1200×630 px for consistent previews
+- After changes, clear CDN or config cache if you use `php artisan config:cache` in production
+
+---
+
+---
+
+# General & Branding
+
+# General & Branding
+
+**URL:** `/dashboard/settings/general`
+
+- Site name, tagline, description
+- **Application URL** — public base used for publish subdomain root / links (`APP_URL` / publish root)
+- Logos light/dark/SVG, favicon
+- Default theme, accent, language, timezone, currency
+
+---
+
+---
+
+# Themes
+
+# Appearance
+
+**URL:** `/dashboard/settings/appearance`
+
+| Setting | Options |
+|---------|---------|
+| Admin theme | system / light / dark |
+| Accent palette | deep, slate, rose, and other catalog entries (`config/magic_themes.php`) |
+| Density | comfortable / compact |
+| Sidebar | default / compact |
+| Content width | layout width tokens |
+| Panel radius | lg / xl / 2xl |
+| Surface | soft / outlined |
+
+Public marketing colors and hero mesh are edited under [Frontend Sections](/docs/frontend-sections) and [General & Branding](/docs/general-settings).
+
+---
+
+---
+
+# Email (SMTP)
+
+# Email (SMTP)
+
+Krikkit does not include an admin UI for SMTP. Configure mail in your **`.env`** file (or hosting panel environment variables).
+
+## Required variables
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.example.com
+MAIL_PORT=587
+MAIL_USERNAME=your-user
+MAIL_PASSWORD=your-password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@yourdomain.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+## Common providers
+
+| Provider | Notes |
+|----------|--------|
+| **Amazon SES** | Use SES SMTP credentials; verify domain in AWS |
+| **Mailgun** | SMTP credentials from Mailgun dashboard |
+| **Postmark** | Server token as password |
+| **SendGrid** | API key or SMTP relay |
+| **Gmail / Google Workspace** | App password; not ideal for production volume |
+
+## Local development
+
+Default `.env.example` often uses `MAIL_MAILER=log`, which writes messages to `storage/logs` instead of sending. Switch to SMTP or a tool like [Mailpit](https://github.com/axllent/mailpit) when testing registration and billing emails.
+
+## After changing mail settings
+
+```bash
+php artisan config:clear
+```
+
+If you use config caching in production, rebuild cache after updating env:
+
+```bash
+php artisan config:cache
+```
+
+## What uses email
+
+- User registration and password reset
+- Billing and subscription notifications (when implemented in templates)
+- System notifications from queued jobs
+
+Test by registering a new user on staging with a real inbox.
+
+---
+
+---
+
+# Publish Settings
+
+# Publish Settings
+
+**URL:** `/dashboard/settings/publish`  
+**Ability:** `settings.revise`
+
+- Toggle site-wide publish feature
+- Display parent domain, `APP_URL`, server IP, and CNAME target for operators
+- Pair with [Publish & Export](/docs/publish-export) in the Lab docs
+
+---
+
+---
+
+# Lab Console
+
+# Lab Console
+
+**URL:** `/dashboard/settings/builder`
+
+| Setting | Effect |
+|---------|--------|
+| Default AI model | Platform default from configured integrations |
+| Allow model selection | Lets users pick a model in the builder composer |
+| Notification sounds | On/off + sound key (chime, bell, pop, soft, ping, piano, none) |
+
+Related limits live in `config/krikkit.php` / `KRIKKIT_*` env vars (chat rounds, credits, preview, terminal, screenshots).
+
+---
+
+---
+
+# Privacy & Legal
+
+# Privacy & Legal
+
+Enable legal pages and edit content per language.
+
+**Location:** Dashboard → **Admin** → **Settings** → **Privacy & terms**  
+**URL:** `/dashboard/settings/privacy`
+
+## Toggles
+
+| Option | Effect |
+|--------|--------|
+| **Enable privacy policy page** | Serves `/privacy` when content exists |
+| **Enable terms page** | Serves `/terms` when content exists |
+| **Enable refund policy page** | Serves `/refund` when content exists |
+| **Enable license agreement page** | Serves `/license` when content exists |
+| **Show links on login page** | Displays links below the sign-in form for every enabled document |
+
+## Content per language
+
+1. Select **language** from the dropdown for each document
+2. Edit **Privacy policy**, **Terms of service**, **Refund policy**, and **License agreement** rich text
+3. Save
+
+Repeat for each active locale. Empty content for a language hides that locale’s page even when enabled. Saving content for a document automatically enables its public page.
+
+## Public URLs
+
+| Document | Path |
+|----------|------|
+| Privacy policy | `/privacy` |
+| Terms of service | `/terms` |
+| Refund policy | `/refund` |
+| License agreement | `/license` |
+
+Each enabled document shows its **permalink** in the admin form. Published pages also appear in the landing footer (labels are editable under [Frontend Sections](/docs/frontend-sections)).
+
+## Related
+
+Custom legal or info pages can also be created under [Pages](/docs/pages) if you need URLs beyond these four routes.
+
+---
+
+---
+
+# API Integration
+
+# API Integration
+
+**URL:** `/dashboard/integration`  
+**Ability:** `ai.revise`
+
+Overview lists each provider, default model, and whether keys are configured. Open a provider to edit (`/dashboard/integration/{provider}/edit`).
+
+## AI providers
+
+| Slug | Provider |
+|------|----------|
+| `anthropic` | Claude |
+| `openai` | OpenAI |
+| `xai` | xAI |
+| `deepseek` | DeepSeek |
+| `groq` | Groq |
+| `mistral` | Mistral |
+| `zhipuai` | ZhipuAI |
+| `google` | Google AI Studio |
+
+Per provider: enable toggle, API key, model checklist, cost estimator. Dashboard values override `.env`.
+
+**Default model env:** `AI_DEFAULT_MODEL`
+
+## Platform OAuth
+
+| Provider | Callback |
+|----------|----------|
+| GitHub | `{APP_URL}/lab/vcs/github/return` |
+| Supabase | `{APP_URL}/lab/oauth/supabase/return` |
+
+## Stock photographs
+
+Unsplash and Pixabay power Lab’s `lookup_visuals` tool.
+
+| Provider | Fields |
+|----------|--------|
+| Unsplash | Application ID, Access Key, Secret key |
+| Pixabay | API key |
+
+Unsplash photograph search uses the **Access Key** (`Authorization: Client-ID`). Application ID is stored for reference; Secret is OAuth-only. Full setup: [Stock Images](/docs/stock-images).
+
+---
+
+# GitHub
+
+# GitHub
+
+**URL:** `/dashboard/integration/github/edit`  
+**Ability:** `ai.revise`
+
+| Setting | Env |
+|---------|-----|
+| OAuth client ID | `GITHUB_OAUTH_CLIENT_ID` |
+| OAuth client secret | `GITHUB_OAUTH_CLIENT_SECRET` |
+| Callback | `{APP_URL}/lab/vcs/github/return` |
+
+Users connect personal accounts from **Settings → Applications** or inside the Lab. Public URL import works without OAuth.
+
+---
+
+---
+
+# Supabase
+
+# Supabase
+
+**URL:** `/dashboard/integration/supabase/edit`  
+**Ability:** `ai.revise`
+
+| Setting | Env |
+|---------|-----|
+| OAuth client ID | `SUPABASE_OAUTH_CLIENT_ID` |
+| OAuth client secret | `SUPABASE_OAUTH_CLIENT_SECRET` |
+| Callback | `{APP_URL}/lab/oauth/supabase/return` (HTTPS required) |
+
+Supabase rejects local `http://127.0.0.1` callbacks — use a tunnel for local dev.
+
+---
+
+---
+
+# Stock Images
+
+# Stock Images
+
+Lab looks up licensed photographs on the **server** and returns public image URLs to the agent. Visitors never see these keys.
+
+**Ability:** `ai.revise`
+
+| Catalog | Dashboard URL |
+|---------|----------------|
+| Unsplash | `/dashboard/integration/unsplash/edit` |
+| Pixabay | `/dashboard/integration/pixabay/edit` |
+
+Workspace values override `.env`. Enable the provider with the switch on the same screen.
+
+## Unsplash
+
+Unsplash’s developers dashboard lists **three** values. Paste all three. Photograph search uses the **Access Key**.
+
+| Field | Unsplash label | Used for search? |
+|-------|----------------|------------------|
+| Application ID | Application ID | Stored only. Lab does not send it with searches. |
+| Access Key | Access Key (Client-ID) | **Yes.** Sent as `Authorization: Client-ID {key}`. |
+| Secret key | Secret key | Stored encrypted. OAuth only — Lab search does not use it. |
+
+```env
+UNSPLASH_APPLICATION_ID=
+UNSPLASH_ACCESS_KEY=
+UNSPLASH_SECRET_KEY=
+```
+
+Without a valid Access Key, `lookup_visuals` returns an empty list and the agent falls back to CSS or illustration instead of inventing photo URLs.
+
+## Pixabay
+
+One API key. Dashboard → API Integration → Pixabay, or `PIXABAY_API_KEY` in `.env`.
+
+## In Lab
+
+1. When a page needs real photos (hero, interior, product, team, food), the agent calls `lookup_visuals` **before** `write_file`.
+2. Chat shows an image-icon tool card: **Looking up photographs** / **Looked up N photographs**. The scene query is not printed in the transcript.
+3. The agent must use each returned `src` as an img src. It must not invent Unsplash or Pixabay IDs.
+
+Related: [API Integration](/docs/integration), [Lab Integrations](/docs/lab-integrations).
+
+---
+
+# Build Assets
+
+# Build Assets
+
+Krikkit ships a Laravel backend plus a Vite bundle for the public site, dashboard, auth screens, and the Lab React app.
+
+## Production build
+
+After install or deploy:
+
+```bash
+npm install
+npm run build
+```
+
+Confirm `public/build/manifest.json` exists. Without it, pages load without CSS/JS.
+
+## Local development
+
+```bash
+composer run dev
+```
+
+Runs Laravel, queue listener, logs, and Vite HMR together.
+
+## Lab frontend
+
+The Lab IDE lives under `resources/js/lab/`. Changes there require `npm run build` (or `npm run dev` during development) before production reflects updates.
+
+## When to rebuild
+
+- After pulling updates that touch `resources/js`, `resources/css`, or `vite.config.js`
+- Before packaging for CodeCanyon or production deploy
+- Not required for Markdown-only or PHP-only dashboard changes
+
+---
+
+---
+
+# Environment
+
+# Environment Configuration
+
+Copy `.env.example` to `.env` and set values for your host. The web installer writes database credentials and `APP_URL`; add the rest before going live. Dashboard settings override most of these.
+
+## Core
+
+```env
+APP_NAME=Krikkit
+APP_URL=https://yourdomain.com
+APP_ENV=production
+APP_DEBUG=false
+```
+
+## Database & cache
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=krikkit
+DB_USERNAME=
+DB_PASSWORD=
+
+SESSION_DRIVER=database
+CACHE_STORE=database
+QUEUE_CONNECTION=database
+```
+
+## License
+
+```env
+PERMIT_ENDPOINT=https://deep42.co/api/deepthought/verify
+```
+
+## AI providers (Lab)
+
+At least one key is required — demo mode is off by default.
+
+```env
+AI_DEFAULT_MODEL=claude-sonnet-4-5
+ANTHROPIC_API_KEY=
+OPENAI_API_KEY=
+```
+
+See **Dashboard → API Integration** for the full provider list. Workspace keys override `.env`.
+
+## Payments
+
+```env
+STRIPE_PUBLIC_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+```
+
+Webhook URLs: `{APP_URL}/webhooks/stripe` and `{APP_URL}/webhooks/paypal`.
+
+## Lab integrations
+
+```env
+GITHUB_OAUTH_CLIENT_ID=
+GITHUB_OAUTH_CLIENT_SECRET=
+SUPABASE_OAUTH_CLIENT_ID=
+SUPABASE_OAUTH_CLIENT_SECRET=
+
+# Unsplash — search uses Access Key only
+UNSPLASH_APPLICATION_ID=
+UNSPLASH_ACCESS_KEY=
+UNSPLASH_SECRET_KEY=
+PIXABAY_API_KEY=
+```
+
+Dashboard → API Integration is preferred over `.env` for these keys.
+
+## Publish
+
+```env
+LAB_PUBLISH_ARTIFACT_MAX_BYTES=52428800
+LAB_PUBLISH_ARTIFACT_MAX_FILES=5000
+```
+
+---
+
+# Updating
+
+# Updating
+
+## Safe upgrade path
+
+1. Back up your database and `.env`
+2. Upload changed files over your install (keep `.env`)
+3. Run:
+
+```bash
+composer install --no-dev --optimize-autoloader
+php artisan migrate
+npm install && npm run build
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
+
+<Callout>
+
+Never run `migrate:fresh`, `db:wipe`, or `migrate:refresh` on a live site with customer data.
+
+</Callout>
+
+## License
+
+After major updates, open **Dashboard → Settings → License** and recheck your purchase code if prompted.
+
+## Queue worker
+
+Optional unless you add custom queued jobs. Core Lab preview and publish flows do not require a worker.
+
+---
+
+---
+
+# Common Issues
+
+# Common Issues
+
+## Installer redirects or 500
+
+1. Confirm PHP **8.3+** for web and CLI
+2. Check writable paths: `storage/*`, `bootstrap/cache`
+3. Review `storage/logs/laravel.log`
+
+## Blank styles after deploy
+
+Run `npm install && npm run build` and ensure `public/build/manifest.json` exists.
+
+## Cannot log in after install
+
+Verify `SESSION_DRIVER=database` and sessions table migrated. Clear browser cookies.
+
+## License errors
+
+Re-bind purchase code under **Dashboard → Settings → License**. Confirm outbound HTTPS to `deep42.co`.
+
+---
+
+---
+
+# AI & Lab
+
+# AI & Lab
+
+## Failed to fetch in Lab chat
+
+- Confirm a real provider API key under **Dashboard → API Integration**
+- Set `AI_HTTP_DISABLE_PROXY=true` if a system proxy hangs outbound calls
+- Check `storage/logs/laravel.log` for provider HTTP errors
+
+## Preview blank or only a background colour
+
+- Hard refresh the Lab tab
+- Open browser DevTools → Console for DeepThought runtime errors
+- The seed `src/App.jsx` is a blank canvas. Lab continues the turn until the first real sections are written into `App.jsx`. If a run stopped mid-page, send another message so the agent can finish assembling the layout.
+
+## Photographs missing from generated sites
+
+- Confirm Unsplash **Access Key** (not only Application ID) under **Dashboard → API Integration → Unsplash** — see [Stock Images](/docs/stock-images)
+- Enable the Unsplash provider
+- Chat should show an image-icon card (**Looking up photographs**). An empty result list means the agent should use CSS or illustration, not fake Unsplash URLs
+
+## Project stays Untitled
+
+Untitled is the placeholder for greetings and non-product messages. A real brief should mint a short invented brand, never a title-cased copy of the prompt. If a project was left Untitled, send another product brief in the same Lab — it will retitle.
+
+## Credits exhausted
+
+Adjust pack grants under **Dashboard → Packs** or grant credits under **Dashboard → Credits**.
+
+---
+
+# Publish
+
+# Publish
+
+## Subdomain does not resolve
+
+- Wildcard DNS: `*.{APP_URL host}` → server
+- Confirm **Dashboard → Settings → Publish** shows the expected parent domain
+
+## Custom domain stuck on pending
+
+- Add TXT record: `_krikkit-lab.{host}` = `krikkit={token}` from the Lab publish panel
+- CNAME custom host to your `APP_URL` host
+
+## Artifact upload fails
+
+- Default max 50MB / 5000 files — tune `LAB_PUBLISH_ARTIFACT_MAX_BYTES`
+- Run production build in Lab before uploading artifact
+
+---

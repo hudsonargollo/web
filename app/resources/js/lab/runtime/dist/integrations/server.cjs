@@ -1,0 +1,3 @@
+Object.defineProperty(exports,Symbol.toStringTag,{value:"Module"});const n=require("../lab-keys-BeJxXanB.cjs"),r=require("../headers-X9nJSIZQ.cjs");let t=require("node:buffer");async function o(){return r.readServiceWorkerSource({}.url)}async function u(s){const e=await o();return new Response(e,{status:200,headers:r.swResponseHeaders()})}async function c(){const s=await o(),e=r.swResponseHeaders();return{body:t.Buffer.from(s,"utf8"),headers:e,contentType:e["Content-Type"]}}exports.DEFAULT_SW_PATH=n.DEFAULT_SW_PATH;exports.getServiceWorkerSource=o;exports.serveSW=u;exports.serveSWNode=c;
+
+//# sourceMappingURL=server.cjs.map
