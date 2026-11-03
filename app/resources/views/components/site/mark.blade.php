@@ -28,7 +28,8 @@
     </span>
 @else
     <span {{ $attributes->class('inline-flex items-center gap-2.5') }}>
-        <img src="{{ asset('brand/clubemkt-mark.svg').'?v='.\App\Support\Site\SiteSettings::BUNDLED_VERSION }}" alt="" aria-hidden="true" class="size-8 shrink-0">
+        <img src="{{ asset('brand/clubemkt-mark-dark.svg').'?v='.\App\Support\Site\SiteSettings::BUNDLED_VERSION }}" alt="" aria-hidden="true" class="size-8 shrink-0 dark:hidden">
+        <img src="{{ asset('brand/clubemkt-mark.svg').'?v='.\App\Support\Site\SiteSettings::BUNDLED_VERSION }}" alt="" aria-hidden="true" class="hidden size-8 shrink-0 dark:block">
         <span class="flex min-w-0 flex-col leading-none">
             <span class="truncate text-[15px] font-semibold tracking-tight text-krikkit-fg">WebKit</span>
             <span class="mt-1 truncate text-[9px] font-semibold uppercase tracking-[0.18em] text-krikkit-subtle">by ClubeMkt</span>
