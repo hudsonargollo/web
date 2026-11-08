@@ -353,6 +353,13 @@ return [
             'family' => 'gemini',
             'max_output' => 65536,
         ],
+        'gemini-3.5-flash-lite' => [
+            'provider' => 'google',
+            'api_model' => 'gemini-3.5-flash-lite',
+            'label' => 'Gemini 3.5 Flash-Lite',
+            'family' => 'gemini',
+            'max_output' => 65536,
+        ],
 
         // Hidden models are routable by task (see `tasks` above) but never offered
         // in the customer picker — CPU inference is far too slow for site builds.
