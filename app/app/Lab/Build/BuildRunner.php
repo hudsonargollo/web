@@ -82,6 +82,8 @@ final class BuildRunner
         $messages = [
             ChatMessage::user($prompt),
             ChatMessage::assistant($plan->content !== '' ? $plan->content : 'Plan complete. Execute the site now.'),
+            // Gemini rejects payloads ending on a model turn; later turns end on tool results.
+            ChatMessage::user('Execute the plan now with the tools. Write index.html first.'),
         ];
 
         $build->forceFill([
