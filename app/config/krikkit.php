@@ -17,6 +17,8 @@ return [
         'max_file_bytes' => (int) env('KRIKKIT_BUILD_MAX_FILE_BYTES', 2 * 1024 * 1024),
         'max_total_bytes' => (int) env('KRIKKIT_BUILD_MAX_TOTAL_BYTES', 50 * 1024 * 1024),
         'repeat_error_limit' => 3,
+        'provider_attempts' => (int) env('KRIKKIT_BUILD_PROVIDER_ATTEMPTS', 4),
+        'provider_backoff_seconds' => (int) env('KRIKKIT_BUILD_PROVIDER_BACKOFF', 5),
     ],
 
     'callback' => [

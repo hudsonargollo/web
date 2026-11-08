@@ -6,6 +6,7 @@ use App\Ai\ChatGateway;
 use App\Ai\Data\AgentStage;
 use App\Ai\Data\ChatMessage;
 use App\Ai\Data\ChatResponse;
+use App\Ai\Exceptions\ProviderException;
 use App\Ai\Lab\LabToolCatalog;
 use App\Ai\ModelCatalog;
 use App\Entitlement\EntitlementCatalog;
@@ -70,13 +71,7 @@ final class BuildRunner
         $brief = BuildBrief::fromArray((string) $build->kind, is_array($build->brief) ? $build->brief : []);
         $prompt = $brief->prompt();
 
-        $plan = $this->gateway->complete(
-            $modelId,
-            [ChatMessage::user($prompt)],
-            'build',
-            stage: AgentStage::Planner,
-            contextPack: self::staticContextPack(),
-        );
+        $plan = $this->complete($modelId, [ChatMessage::user($prompt)], AgentStage::Planner);
         $this->charge($build, $project, $user, $plan);
 
         $messages = [
@@ -101,14 +96,7 @@ final class BuildRunner
                 throw new BuildException("Build exceeded its {$wallClock}s wall clock budget");
             }
 
-            $response = $this->gateway->complete(
-                $modelId,
-                $messages,
-                'build',
-                stage: AgentStage::Executor,
-                contextPack: self::staticContextPack(),
-                tools: $this->toolCatalog->headlessDefinitions(),
-            );
+            $response = $this->complete($modelId, $messages, AgentStage::Executor, $this->toolCatalog->headlessDefinitions());
             $this->charge($build, $project, $user, $response);
             $build->forceFill(['turns' => $turn])->save();
 
@@ -172,6 +160,38 @@ final class BuildRunner
             'files' => $build->files,
             'bytes' => $writtenTotal,
         ]);
+    }
+
+    /** Retry transient provider errors (429/5xx) so one overload spike cannot kill a multi-turn build. */
+    private function complete(string $modelId, array $messages, AgentStage $stage, ?array $tools = null): ChatResponse
+    {
+        $attempts = max(1, (int) config('krikkit.build.provider_attempts', 4));
+        $backoff = max(1, (int) config('krikkit.build.provider_backoff_seconds', 5));
+
+        for ($attempt = 1; ; $attempt++) {
+            try {
+                return $this->gateway->complete(
+                    $modelId,
+                    $messages,
+                    'build',
+                    stage: $stage,
+                    contextPack: self::staticContextPack(),
+                    tools: $tools,
+                );
+            } catch (ProviderException $e) {
+                if ($attempt >= $attempts || ! in_array($e->status, [429, 500, 502, 503, 504], true)) {
+                    throw $e;
+                }
+
+                $wait = $backoff * (2 ** ($attempt - 1));
+                Log::warning('krikkit.build.provider_retry', [
+                    'attempt' => $attempt,
+                    'status' => $e->status,
+                    'wait_seconds' => $wait,
+                ]);
+                sleep($wait);
+            }
+        }
     }
 
     /**
