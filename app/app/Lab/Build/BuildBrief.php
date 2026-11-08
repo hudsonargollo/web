@@ -66,7 +66,7 @@ final readonly class BuildBrief
             '',
             'Copy must be specific to this niche and audience. Describe services concretely; never invent credentials, guarantees, team members, prices, or reviews.',
             '',
-            'Start by writing index.html in full. Then write the stylesheet and any script. Use write_file for every file.',
+            'Write the complete site as a single self-contained index.html (inline <style> and <script>) using write_file, then stop with a short confirmation and no further tool calls.',
         ];
 
         return implode("\n", $lines);
@@ -114,7 +114,7 @@ final readonly class BuildBrief
             '',
             $this->staticContract(),
             '',
-            'Start by writing index.html in full, then the stylesheet. Use write_file for every file.',
+            'Write the complete proposal as a single self-contained index.html (inline <style>) using write_file, then stop with a short confirmation and no further tool calls.',
         ];
 
         return implode("\n", $lines);
@@ -124,13 +124,13 @@ final readonly class BuildBrief
     {
         return implode("\n", [
             'OUTPUT CONTRACT (non-negotiable):',
-            '1. Emit a self-contained static site: index.html at the workspace root, stylesheet at assets/site.css, optional script at assets/site.js.',
-            '2. No build step, no npm, no bundler, no framework imports (React/Vue/Svelte/Vite), no TypeScript, no JSX.',
-            '3. Reference assets root-relative, e.g. "/assets/site.css".',
-            '4. Responsive from 360px to 1440px. One <h1>. Labelled form fields. Visible focus states. Text contrast at least 4.5:1.',
-            '5. Include <meta name="description"> and Open Graph tags. Add JSON-LD LocalBusiness only when a business name is known.',
-            '6. No lorem ipsum. No placeholder brackets except contact details the brief did not supply.',
-            '7. Write only site files — no README, docs, package.json, or lockfiles.',
+            '1. Emit exactly ONE file: a self-contained index.html at the workspace root, with all CSS in an inline <style> block and any JS in an inline <script> block. Do NOT create external .css/.js files or an assets/ directory.',
+            '2. No build step, no npm, no bundler, no framework imports (React/Vue/Svelte/Vite), no TypeScript, no JSX, no external CDN links.',
+            '3. Responsive from 360px to 1440px. One <h1>. Labelled form fields. Visible focus states. Text contrast at least 4.5:1.',
+            '4. Include <meta name="description"> and Open Graph tags. Add JSON-LD LocalBusiness only when a business name is known.',
+            '5. No lorem ipsum. No placeholder brackets except contact details the brief did not supply.',
+            '6. Write only index.html — no README, docs, package.json, or lockfiles.',
+            '7. After writing the complete index.html once, reply with a one-line confirmation and NO tool calls so the build can finish.',
         ]);
     }
 
