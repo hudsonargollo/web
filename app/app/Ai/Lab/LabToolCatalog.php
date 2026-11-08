@@ -8,6 +8,9 @@ namespace App\Ai\Lab;
  */
 final class LabToolCatalog
 {
+    /** Tools the headless BuildToolExecutor actually implements. */
+    public const HEADLESS_TOOL_NAMES = ['write_file', 'read_file', 'list_dir', 'file_search', 'grep'];
+
     /**
      * OpenAI-compatible tools array.
      *
@@ -81,6 +84,33 @@ final class LabToolCatalog
                 'push' => ['type' => 'boolean', 'description' => 'Push the workspace after create (default true)'],
             ], []),
         ];
+    }
+
+    /**
+     * Definitions for headless builds: only implemented tools, and a
+     * write_file description that does not assume the browser React seed.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function headlessDefinitions(): array
+    {
+        $defs = [];
+
+        foreach ($this->definitions() as $def) {
+            $name = (string) data_get($def, 'function.name');
+
+            if (! in_array($name, self::HEADLESS_TOOL_NAMES, true)) {
+                continue;
+            }
+
+            if ($name === 'write_file') {
+                $def['function']['description'] = 'Atomic full-file overwrite into the build workspace. REQUIRED for every create or edit — emit the COMPLETE balanced file body in one pass (every tag, brace, and string closed). Static sites only: index.html, assets/site.css, assets/site.js. There is no apply_patch / search-replace tool.';
+            }
+
+            $defs[] = $def;
+        }
+
+        return $defs;
     }
 
     /**

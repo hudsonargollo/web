@@ -28,6 +28,12 @@ final class LabBuildPolicy
         $safety = data_get($contextPack, 'pack.safetyFlags', []);
         $safety = is_array($safety) ? $safety : [];
 
+        // Headless builds end on an empty tool turn and have no
+        // lookup_visuals; browser first-turn forcing must not apply.
+        if ((bool) ($safety['staticSite'] ?? false)) {
+            return $clientChoice ?? 'auto';
+        }
+
         if ((bool) ($safety['forceWriteFile'] ?? false)) {
             return [
                 'type' => 'function',

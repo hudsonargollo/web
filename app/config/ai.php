@@ -68,6 +68,10 @@ return [
             resource_path('prompts/lab/system.md'),
             resource_path('prompts/lab/design.md'),
         ],
+        // Headless MoneyMachine builds: static output, no browser-lab layers.
+        'build' => [
+            resource_path('prompts/build/system.md'),
+        ],
         'translate' => resource_path('prompts/translate/system.md'),
         'title' => resource_path('prompts/title/system.md'),
     ],

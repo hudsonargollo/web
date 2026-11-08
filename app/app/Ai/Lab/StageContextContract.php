@@ -173,6 +173,30 @@ Discovery rules for this stage:
 - visual_identity in context_baseline is this project's look. When you propose the workspace, state white canvas + assigned accent + first viewport in one sentence (user-stated brand/mode/colors override). Default to white `#ffffff` background and borderless Vercel-class layout — no dark mode unless the user asked. Do not list hex codes, fonts, clamp(), or craft rules in chat.
 HINT;
 
+        $staticSite = (bool) ($safety['staticSite'] ?? false);
+
+        $staticPlannerHint = <<<'HINT'
+
+Planner rules (headless static build):
+- No user is present: never ask questions and never emit meta tags, suggestion chips, or workspace proposals.
+- Reply with a concise plan only: the file list (index.html, assets/site.css, optional assets/site.js) and the section order you will implement, in the brief's content language.
+- The output is a static site served from disk: no build step, no framework, no npm dependencies, no backend, no React components or routes.
+- Keep it under 120 words. The executor stage implements this plan with write_file.
+HINT;
+
+        $staticExecutorHint = <<<'HINT'
+
+Executor rules (headless static build):
+- This run has no user and no Preview. Do not ask questions, do not recap, and do not emit meta tags, checklists, or suggestion chips.
+- Output is a static site served straight from disk: index.html at the workspace root, assets/site.css, optional assets/site.js. No framework, no bundler, no npm, no JSX or TypeScript, no package.json.
+- Only these tools exist: write_file, read_file, list_dir, file_search, grep. Any other tool name fails.
+- Atomic writes only: every create or edit is one write_file with the COMPLETE balanced file body. No patches, no snippets, no truncated files.
+- Write index.html first, in full, then the stylesheet and script. Reference assets root-relative ("/assets/site.css").
+- Follow the OUTPUT CONTRACT in the brief exactly: responsive 360-1440px, one h1, labelled form fields, visible focus states, meta description and Open Graph tags, JSON-LD LocalBusiness only with a known business name.
+- Copy is specific to the brief. Never invent credentials, prices, reviews, team members, or metrics.
+- When the site is complete, stop calling tools and reply with one short sentence naming the files written.
+HINT;
+
         $stageHint = match ($stage) {
             AgentStage::Chat, AgentStage::Clarify, AgentStage::Router, AgentStage::Planner => $turnRecap
                 ? $recapHint
@@ -265,6 +289,15 @@ Upfront plan (complex work only):
 HINT,
             default => '',
         };
+
+        if ($staticSite) {
+            $thoughtHint = '';
+            $stageHint = match ($stage) {
+                AgentStage::Planner => $staticPlannerHint,
+                AgentStage::Executor => $staticExecutorHint,
+                default => '',
+            };
+        }
 
         return trim(<<<TXT
 [Krikkit stage context]

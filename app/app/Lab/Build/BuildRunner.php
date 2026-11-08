@@ -6,6 +6,7 @@ use App\Ai\ChatGateway;
 use App\Ai\Data\AgentStage;
 use App\Ai\Data\ChatMessage;
 use App\Ai\Data\ChatResponse;
+use App\Ai\Lab\LabToolCatalog;
 use App\Ai\ModelCatalog;
 use App\Entitlement\EntitlementCatalog;
 use App\Entitlement\EntitlementGate;
@@ -29,6 +30,7 @@ final class BuildRunner
         private readonly ModelCatalog $catalog,
         private readonly SiteWorkspace $workspace,
         private readonly BuildToolExecutor $tools,
+        private readonly LabToolCatalog $toolCatalog,
         private readonly EntitlementGate $entitlements,
         private readonly LabCreditMeter $credits,
     ) {}
@@ -71,8 +73,9 @@ final class BuildRunner
         $plan = $this->gateway->complete(
             $modelId,
             [ChatMessage::user($prompt)],
-            'lab',
+            'build',
             stage: AgentStage::Planner,
+            contextPack: self::staticContextPack(),
         );
         $this->charge($build, $project, $user, $plan);
 
@@ -99,8 +102,10 @@ final class BuildRunner
             $response = $this->gateway->complete(
                 $modelId,
                 $messages,
-                'lab',
+                'build',
                 stage: AgentStage::Executor,
+                contextPack: self::staticContextPack(),
+                tools: $this->toolCatalog->headlessDefinitions(),
             );
             $this->charge($build, $project, $user, $response);
             $build->forceFill(['turns' => $turn])->save();
@@ -165,6 +170,14 @@ final class BuildRunner
             'files' => $build->files,
             'bytes' => $writtenTotal,
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function staticContextPack(): array
+    {
+        return ['pack' => ['safetyFlags' => ['staticSite' => true]]];
     }
 
     private function charge(Build $build, LabProject $project, User $user, ChatResponse $response): void
