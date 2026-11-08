@@ -339,6 +339,13 @@ return [
             'pricing' => ['input_per_mtok' => 1.25, 'output_per_mtok' => 10.00],
             'max_output' => 65536,
         ],
+        'gemini-3.8-flash' => [
+            'provider' => 'google',
+            'api_model' => 'gemini-3.8-flash',
+            'label' => 'Gemini 3.8 Flash',
+            'family' => 'gemini',
+            'max_output' => 65536,
+        ],
 
         // Hidden models are routable by task (see `tasks` above) but never offered
         // in the customer picker — CPU inference is far too slow for site builds.
