@@ -56,7 +56,7 @@ final class BuildRunner
         $this->entitlements->assertQuota($user, EntitlementCatalog::PROJECTS);
 
         $project = $this->projectFor($build, $user);
-        $this->workspace->ensure($project);
+        $this->workspace->ensureStatic($project);
 
         $build->forceFill([
             'lab_project_id' => $project->id,

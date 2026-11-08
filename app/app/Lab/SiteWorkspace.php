@@ -165,6 +165,33 @@ final class SiteWorkspace
         return $root;
     }
 
+    /** Empty workspace for headless builds: the React kit's index.html would satisfy the completion check. */
+    public function ensureStatic(LabProject $project): string
+    {
+        $root = $this->root($project);
+
+        File::ensureDirectoryExists(dirname($root));
+
+        if (is_dir($root)) {
+            File::deleteDirectory($root);
+        }
+
+        File::ensureDirectoryExists($root);
+        File::put($root.'/.krikkit-kit', json_encode([
+            'version' => self::KIT_VERSION,
+            'stack' => 'static',
+            'origin' => 'machine-build',
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
+
+        $project->forceFill([
+            'kit_version' => self::KIT_VERSION,
+            'stack' => 'static',
+            'workspace_status' => 'ready',
+        ])->save();
+
+        return $root;
+    }
+
     /**
      * True when disk still matches the seed kit (no user/AI edits yet).
      */
